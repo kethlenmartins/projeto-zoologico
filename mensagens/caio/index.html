@@ -1,124 +1,62 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mensagem para o Leo - Kethlen</title>
-
-  <style>
-    :root {
-      --cor-principal: #ff6b6b;
-      --cor-secundaria: #4ecdc4;
-      --cor-texto: #2d3436;
-    }
-
-    body {
-      font-family: 'Georgia', serif;
-      background: linear-gradient(135deg, var(--cor-principal) 0%, var(--cor-secundaria) 100%);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      margin: 0;
-    }
-
-    .card {
-      background: white;
-      border-radius: 20px;
-      padding: 50px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-      max-width: 700px;
-      width: 100%;
-      animation: fadeIn 1s ease-in;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    h1 {
-      color: var(--cor-principal);
-      text-align: center;
-      margin-bottom: 10px;
-      font-size: 2.5em;
-    }
-
-    h2 {
-      color: var(--cor-texto);
-      text-align: center;
-      margin-bottom: 30px;
-      font-weight: normal;
-      font-style: italic;
-    }
-
-    .message {
-      color: var(--cor-texto);
-      line-height: 1.8;
-      font-size: 1.1em;
-      margin-bottom: 30px;
-      text-align: justify;
-    }
-
-    .signature {
-      text-align: right;
-      color: var(--cor-principal);
-      font-weight: bold;
-      font-size: 1.2em;
-      margin-top: 40px;
-    }
-
-    .back-link {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 12px 24px;
-      background: var(--cor-principal);
-      color: white;
-      text-decoration: none;
-      border-radius: 25px;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
-
-    .back-link:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-    }
-
-    .center {
-      text-align: center;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feliz Aniversário Leo - Caio</title>
 </head>
 <body>
-  <div class="card">
-    <h1>Feliz Aniversario Leo!</h1>
-    <h2>De: Kethlen</h2>
+  <a id="easter-egg" href="especial.html" style="position: fixed; display: none; z-index: 9999; background: gold; padding: 12px 20px; border: 3px solid orange; text-decoration: none; color: black; font-weight: bold; font-size: 1.2em; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">🎁 Clique aqui!</a>
+  <img src="images/birthday.gif" alt="GIF de aniversário">
+  
+  <h1>Feliz Aniversário, Leo.</h1>
+  
+  <p>Feliz aniversário, Leo! A sua amizade é algo muito importante para mim e desejo que você tenha um ano maravilhoso repleto de conquistas e saúde!!!</p>
+  
+  <p>De: Caio</p>
+  
+  <a href="../../index.html">Voltar para todas as mensagens</a>
 
-    <p class="message">
-      Leo, espero que este dia seja repleto de alegria e momentos especiais!
+  <script>
+    const easterEgg = document.getElementById('easter-egg');
+    
+    function showEasterEgg() {
+      // Força o display para calcular o tamanho real do botão
+      easterEgg.style.display = 'block';
+      easterEgg.style.visibility = 'hidden';
       
-      Que este novo ano de vida traga muitas realizacoes, sorrisos e conquistas incriveis.
-      Voce merece tudo de melhor que a vida tem a oferecer.
+      // Obtém o tamanho real do botão
+      const buttonWidth = easterEgg.offsetWidth;
+      const buttonHeight = easterEgg.offsetHeight;
       
-      Obrigada por fazer parte da minha vida e por todos os momentos que compartilhamos.
-    </p>
-
-    <div class="signature">
-      Com carinho,<br>
-      Kethlen
-    </div>
-
-    <div class="center">
-      <a href="../../index.html" class="back-link">Voltar para todas as mensagens</a>
-    </div>
-  </div>
+      // Restaura visibilidade
+      easterEgg.style.visibility = 'visible';
+      
+      // Usa a área visível da viewport (importante para mobile com scroll)
+      const viewportWidth = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+      const viewportHeight = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+      
+      // Margem maior para garantir que não fique cortado
+      const margin = 20;
+      const maxX = viewportWidth - buttonWidth - margin;
+      const maxY = viewportHeight - buttonHeight - margin;
+      
+      // Garante que os valores sejam sempre positivos e dentro da tela
+      const x = Math.max(margin, Math.min(maxX, Math.random() * maxX));
+      const y = Math.max(margin, Math.min(maxY, Math.random() * maxY));
+      
+      easterEgg.style.left = x + 'px';
+      easterEgg.style.top = y + 'px';
+      easterEgg.style.display = 'block';
+      
+      // Esconde depois de 1 segundo
+      setTimeout(() => {
+        easterEgg.style.display = 'none';
+      }, 1000);
+    }
+    
+    // Mostra a cada 3 segundos
+    setInterval(showEasterEgg, 3000);
+  </script>
 </body>
 </html>
