@@ -2,123 +2,212 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mensagem para o Leo - Kethlen</title>
-
+  <title>Libertadores – Mata-Mata</title>
   <style>
-    :root {
-      --cor-principal: #ff6b6b;
-      --cor-secundaria: #4ecdc4;
-      --cor-texto: #2d3436;
+    body {
+      font-family: Arial, sans-serif;
+      background: #0b1d13;
+      color: white;
+      text-align: center;
     }
 
-    body {
-      font-family: 'Georgia', serif;
-      background: linear-gradient(135deg, var(--cor-principal) 0%, var(--cor-secundaria) 100%);
-      min-height: 100vh;
+    h1, h2 {
+      margin-top: 20px;
+    }
+
+    .round {
+      margin: 30px 0;
+    }
+
+    .matches {
       display: flex;
-      align-items: center;
       justify-content: center;
-      padding: 20px;
-      margin: 0;
+      flex-wrap: wrap;
+      gap: 25px;
+    }
+
+    .match {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #13291d;
+      padding: 15px;
+      border-radius: 10px;
     }
 
     .card {
-      background: white;
-      border-radius: 20px;
-      padding: 50px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-      max-width: 700px;
-      width: 100%;
-      animation: fadeIn 1s ease-in;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    h1 {
-      color: var(--cor-principal);
-      text-align: center;
-      margin-bottom: 10px;
-      font-size: 2.5em;
-    }
-
-    h2 {
-      color: var(--cor-texto);
-      text-align: center;
-      margin-bottom: 30px;
-      font-weight: normal;
-      font-style: italic;
-    }
-
-    .message {
-      color: var(--cor-texto);
-      line-height: 1.8;
-      font-size: 1.1em;
-      margin-bottom: 30px;
-      text-align: justify;
-    }
-
-    .signature {
-      text-align: right;
-      color: var(--cor-principal);
+      width: 160px;
+      height: 55px;
+      background: #111;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
       font-weight: bold;
-      font-size: 1.2em;
+      transition: 0.3s;
+      user-select: none;
+    }
+
+    .winner {
+      background: #2ecc71;
+      color: #000;
+      cursor: default;
+    }
+
+    .loser {
+      background: #e74c3c;
+      color: #000;
+      cursor: default;
+    }
+
+    .final {
       margin-top: 40px;
+      display: none;
     }
 
-    .back-link {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 12px 24px;
-      background: var(--cor-principal);
-      color: white;
-      text-decoration: none;
-      border-radius: 25px;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
-
-    .back-link:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-    }
-
-    .center {
-      text-align: center;
+    .final img {
+      max-width: 300px;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Feliz Aniversario Leo!</h1>
-    <h2>De: Kethlen</h2>
 
-    <p class="message">
-      Leo, espero que este dia seja repleto de alegria e momentos especiais!
-      
-      Que este novo ano de vida traga muitas realizacoes, sorrisos e conquistas incriveis.
-      Voce merece tudo de melhor que a vida tem a oferecer.
-      
-      Obrigada por fazer parte da minha vida e por todos os momentos que compartilhamos.
-    </p>
+<h1>🏆 Libertadores – Mata-Mata</h1>
 
-    <div class="signature">
-      Com carinho,<br>
-      Kethlen
-    </div>
+<div id="game"></div>
 
-    <div class="center">
-      <a href="../../index.html" class="back-link">Voltar para todas as mensagens</a>
-    </div>
-  </div>
+<div class="final" id="final">
+  <h1>🎉 PARABÉNS, CAMPEÃO DA LIBERTADORES! 🎉</h1>
+  <h2>Feliz aniversário! 🥳⚽</h2>
+  <img src="campeao.png" alt="Campeão segurando a taça">
+</div>
+<script>
+  const CRB = "CRB";
+
+  const allTeams = [
+    CRB, "Flamengo", "River Plate", "Boca Juniors",
+    "Palmeiras", "Atlético-MG", "Nacional",
+    "Peñarol", "Grêmio", "São Paulo",
+    "Independiente", "Colo-Colo",
+    "Olimpia", "Racing", "Estudiantes", "Libertad"
+  ];
+
+  function shuffle(array) {
+    return array.sort(() => Math.random() - 0.5);
+  }
+
+  let currentRound = shuffle([...allTeams]);
+  let roundIndex = 0;
+  const rounds = ["Oitavas de Final", "Quartas de Final", "Semifinal", "Final"];
+
+  const gameDiv = document.getElementById("game");
+  let nextWinners = [];
+
+  function renderRound() {
+    gameDiv.innerHTML = "";
+
+    const roundDiv = document.createElement("div");
+    roundDiv.className = "round";
+
+    const title = document.createElement("h2");
+    title.innerText = rounds[roundIndex];
+    roundDiv.appendChild(title);
+
+    const matchesDiv = document.createElement("div");
+    matchesDiv.className = "matches";
+
+    for (let i = 0; i < currentRound.length; i += 2) {
+      const teamA = currentRound[i];
+      const teamB = currentRound[i + 1];
+
+      const matchDiv = document.createElement("div");
+      matchDiv.className = "match";
+
+      const cardA = document.createElement("div");
+      const cardB = document.createElement("div");
+
+      cardA.className = "card";
+      cardB.className = "card";
+
+      cardA.innerText = "???";
+      cardB.innerText = "???";
+
+      function finish(winnerCard, loserCard, winner, loser) {
+        winnerCard.innerText = winner;
+        loserCard.innerText = loser;
+
+        winnerCard.classList.add("winner");
+        loserCard.classList.add("loser");
+
+        cardA.onclick = null;
+        cardB.onclick = null;
+
+        nextWinners.push(winner);
+
+        if (nextWinners.length === currentRound.length / 2) {
+          setTimeout(nextRound, 900);
+        }
+      }
+
+      cardA.onclick = () => {
+        if (cardA.classList.contains("winner")) return;
+
+        if (teamA === CRB || teamB === CRB) {
+          // CRB vence, mas fica NA POSIÇÃO CLICADA
+          finish(
+            cardA,
+            cardB,
+            CRB,
+            teamA === CRB ? teamB : teamA
+          );
+        } else {
+          finish(cardA, cardB, teamA, teamB);
+        }
+      };
+
+      cardB.onclick = () => {
+        if (cardB.classList.contains("winner")) return;
+
+        if (teamA === CRB || teamB === CRB) {
+          // CRB vence, mas fica NA POSIÇÃO CLICADA
+          finish(
+            cardB,
+            cardA,
+            CRB,
+            teamA === CRB ? teamB : teamA
+          );
+        } else {
+          finish(cardB, cardA, teamB, teamA);
+        }
+      };
+
+      matchDiv.appendChild(cardA);
+      matchDiv.appendChild(cardB);
+      matchesDiv.appendChild(matchDiv);
+    }
+
+    roundDiv.appendChild(matchesDiv);
+    gameDiv.appendChild(roundDiv);
+  }
+
+  function nextRound() {
+    currentRound = nextWinners;
+    nextWinners = [];
+    roundIndex++;
+
+    if (currentRound.length === 1) {
+      gameDiv.innerHTML = "";
+      document.getElementById("final").style.display = "block";
+    } else {
+      renderRound();
+    }
+  }
+
+  renderRound();
+</script>
+
+
 </body>
 </html>
