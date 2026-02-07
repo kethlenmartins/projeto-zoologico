@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mensagem para o Leo - Kethlen</title>
+
+  <style>
+    :root {
+      --cor-principal: #ff6b6b;
+      --cor-secundaria: #4ecdc4;
+      --cor-texto: #2d3436;
+    }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: linear-gradient(135deg, var(--cor-principal) 0%, var(--cor-secundaria) 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      margin: 0;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 50px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      max-width: 700px;
+      width: 100%;
+      animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1 {
+      color: var(--cor-principal);
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 2.5em;
+    }
+
+    h2 {
+      color: var(--cor-texto);
+      text-align: center;
+      margin-bottom: 30px;
+      font-weight: normal;
+      font-style: italic;
+    }
+
+    .message {
+      color: var(--cor-texto);
+      line-height: 1.8;
+      font-size: 1.1em;
+      margin-bottom: 30px;
+      text-align: justify;
+    }
+
+    .signature {
+      text-align: right;
+      color: var(--cor-principal);
+      font-weight: bold;
+      font-size: 1.2em;
+      margin-top: 40px;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 12px 24px;
+      background: var(--cor-principal);
+      color: white;
+      text-decoration: none;
+      border-radius: 25px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .back-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    .center {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Feliz Aniversario Leo!</h1>
+    <h2>De: Kethlen</h2>
+
+    <p class="message">
+      Leo, espero que este dia seja repleto de alegria e momentos especiais!
+      
+      Que este novo ano de vida traga muitas realizacoes, sorrisos e conquistas incriveis.
+      Voce merece tudo de melhor que a vida tem a oferecer.
+      
+      Obrigada por fazer parte da minha vida e por todos os momentos que compartilhamos.
+    </p>
+
+    <div class="signature">
+      Com carinho,<br>
+      Kethlen
+    </div>
+
+    <div class="center">
+      <a href="../../index.html" class="back-link">Voltar para todas as mensagens</a>
+    </div>
+  </div>
+</body>
+</html>

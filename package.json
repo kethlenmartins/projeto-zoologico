@@ -1,0 +1,25 @@
+{
+  "name": "aniversario-leo",
+  "version": "1.0.0",
+  "description": "Abra o arquivo \"index.html\" na raiz do projeto e adicione um novo item na lista com seu nome:",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kethlenmartins/aniversario-leo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/kethlenmartins/aniversario-leo/issues"
+  },
+  "homepage": "https://github.com/kethlenmartins/aniversario-leo#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

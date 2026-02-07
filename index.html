@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feliz Aniversario Leo</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      min-height: 100vh;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 25%;
+      background: white;
+      padding: 40px 20px;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar h1 {
+      color: #333;
+      font-size: 1.8em;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .sidebar .subtitle {
+      color: #666;
+      font-size: 0.9em;
+      margin-bottom: 30px;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .sidebar ul {
+      list-style: none;
+    }
+
+    .sidebar li {
+      margin: 15px 0;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 12px 16px;
+      background: #667eea;
+      border-radius: 8px;
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      transition: all 0.3s;
+      text-align: center;
+    }
+
+    .sidebar a:hover {
+      background: #764ba2;
+      transform: translateX(5px);
+    }
+
+    .main-content {
+      margin-left: 25%;
+      width: 75%;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .gallery-section {
+      height: 50vh;
+      padding: 40px;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gallery-section h2 {
+      color: #333;
+      margin-bottom: 30px;
+      font-size: 2em;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 1000px;
+    }
+
+    .photo-placeholder {
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.9em;
+      text-align: center;
+      padding: 20px;
+      transition: transform 0.3s;
+    }
+
+    .photo-placeholder:hover {
+      transform: scale(1.05);
+    }
+
+    .text-section {
+      height: 50vh;
+      padding: 40px;
+      background: #fafafa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .text-content {
+      max-width: 800px;
+      text-align: center;
+    }
+
+    .text-content h2 {
+      color: #333;
+      margin-bottom: 20px;
+      font-size: 2em;
+    }
+
+    .text-content p {
+      color: #555;
+      line-height: 1.8;
+      font-size: 1.1em;
+      margin-bottom: 15px;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        position: relative;
+        height: auto;
+      }
+
+      .main-content {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      .gallery {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <h1>Feliz Aniversario Leo!</h1>
+    <p class="subtitle">Seus amigos deixaram mensagens especiais para voce</p>
+    <ul>
+      <li><a href="mensagens/caio/index.html">Caio</a></li>
+      <li><a href="mensagens/flakas/index.html">Flakas</a></li>
+      <li><a href="mensagens/kethlen/index.html">Kethlen</a></li>
+      <li><a href="mensagens/testa/index.html">Testa</a></li>
+      <li><a href="mensagens/will/index.html">Will</a></li>
+    </ul>
+  </aside>
+
+  <main class="main-content">
+    <section class="gallery-section">
+      <h2>Momentos Especiais</h2>
+      <div class="gallery">
+        <div class="photo-placeholder">Foto 1</div>
+        <div class="photo-placeholder">Foto 2</div>
+        <div class="photo-placeholder">Foto 3</div>
+        <div class="photo-placeholder">Foto 4</div>
+      </div>
+    </section>
+
+    <section class="text-section">
+      <div class="text-content">
+        <h2>Uma Celebracao Especial</h2>
+        <p>
+          Leo, hoje celebramos nao apenas mais um ano de vida, mas todas as memorias 
+          e momentos incriveis que compartilhamos com voce.
+        </p>
+        <p>
+          Seus amigos se reuniram para criar este espaco especial, onde cada um pode 
+          expressar o quanto voce e importante em nossas vidas.
+        </p>
+        <p>
+          Que este novo ciclo traga muitas alegrias, realizacoes e momentos inesqueciveis. 
+          Parabens!
+        </p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
