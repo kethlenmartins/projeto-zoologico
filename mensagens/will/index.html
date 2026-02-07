@@ -1,124 +1,861 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mensagem para o Leo - Kethlen</title>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Jogo de Pescaria</title>
+		<script src="https://cdn.jsdelivr.net/npm/phaser@3.70.0/dist/phaser.js"></script>
+		<style>
+			body {
+				margin: 0;
+				padding: 0;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				min-height: 100vh;
+				background: #1a1a2e;
+				font-family: Arial, sans-serif;
+			}
+			#game-container {
+				box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+			}
+		</style>
+	</head>
+	<body>
+		<div id="game-container"></div>
 
-  <style>
-    :root {
-      --cor-principal: #ff6b6b;
-      --cor-secundaria: #4ecdc4;
-      --cor-texto: #2d3436;
-    }
+		<script>
+			// ============================================
+			// CONFIGURAÇÃO DOS PEIXES - PERSONALIZE AQUI!
+			// ============================================
+			// Para adicionar/remover peixes, edite este array
+			// Para usar suas próprias imagens:
+			// 1. Coloque a URL da imagem do peixe em 'fishImage'
+			// 2. Coloque a URL da imagem do pop-up em 'popupImage' (pode ser a mesma)
+			// 3. Ajuste o tamanho (size) conforme necessário
 
-    body {
-      font-family: 'Georgia', serif;
-      background: linear-gradient(135deg, var(--cor-principal) 0%, var(--cor-secundaria) 100%);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      margin: 0;
-    }
+			const FISH_CONFIG = [
+				{
+					id: 1, // ID único do peixe (não mude)
+					x: 200, // Posição horizontal inicial (0-800)
+					y: 150, // Posição vertical inicial (acima do lançador)
+					size: 60, // Tamanho do peixe em pixels
+					speedX: 1.5, // Velocidade horizontal (pixels por frame)
+					speedY: 0.5, // Velocidade vertical (pixels por frame)
+					fishImage: 'assets/clown.png', // URL da imagem do peixe (ex: 'img/peixe1.png')
+					width: 120,
+					height: 70,
+					// Se null, usa círculo colorido
+					color: 0xff1493, // Cor do peixe se não tiver imagem (formato hexadecimal)
+					popupImage:
+						'assets/primeiro_registro.jpg',
+					// Imagem exibida no pop-up
+					title: 'Primeiro registro', // Título do pop-up
+					message:
+						'Depois de um dev que saiu do controle e resultou em forró e piseiro de madrugada no 0, essa foto ficou no meu celular. A primeira vez que você marcou algo.',
+					// Mensagem do pop-up
+				},
+				{
+					id: 2,
+					x: 600,
+					y: 250,
+					size: 50,
+					speedX: -1.2,
+					speedY: 0.8,
+					fishImage: 'assets/angler.png',
+					width: 200,
+					height: 100,
 
-    .card {
-      background: white;
-      border-radius: 20px;
-      padding: 50px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-      max-width: 700px;
-      width: 100%;
-      animation: fadeIn 1s ease-in;
-    }
+					color: 0xff6347,
+					popupImage: 'assets/maybe_a_friend.jpg',
+					title: 'Maybe a friend',
+					message:
+						'Módulo juntos, ida ao CTN, conversas aleatórias sobre hip-hop, algumas comidas suspeitas e documentários sobre animais foram o início da amizade.',
+				},
+				{
+					id: 3,
+					x: 300,
+					y: 380,
+					size: 65,
+					speedX: 1.8,
+					speedY: -0.6,
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+					fishImage: 'assets/octopus.png',
+					width: 180,
+					height: 100,
 
-    h1 {
-      color: var(--cor-principal);
-      text-align: center;
-      margin-bottom: 10px;
-      font-size: 2.5em;
-    }
+					color: 0x008b8b,
+					popupImage:
+						'assets/naruto_kun.jpeg',
+					title: 'Naruto Kun',
+					message: 'Mais projetos, ciência da computação e aulas chatas. Mas, o que marco aqui é que você passou por isso com tudo que pôde. Com alegria, com amor, com meraki. Aqui, ressalto minha admiração por você ser quem você é.',
+				},
+				{
+					id: 4,
+					x: 700,
+					y: 320,
+					size: 55,
+					speedX: -1.0,
+					speedY: 0.7,
 
-    h2 {
-      color: var(--cor-texto);
-      text-align: center;
-      margin-bottom: 30px;
-      font-weight: normal;
-      font-style: italic;
-    }
+					fishImage: 'assets/puffer.png',
+					width: 180,
+					height: 100,
 
-    .message {
-      color: var(--cor-texto);
-      line-height: 1.8;
-      font-size: 1.1em;
-      margin-bottom: 30px;
-      text-align: justify;
-    }
+					color: 0xffd700,
+					popupImage:
+						'assets/definitely_a_friend.jpeg',
+					title: 'Yep, a friend',
+					message: 'Entre aulas, projetos e devs, colegas se tornam amigos. Fizemos mais receitas mirabolantes, contei minhas aventuras com patins e origamis. E de interações se foram laços.',
+				},
+				{
+					id: 5,
+					x: 450,
+					y: 200,
+					size: 60,
+					speedX: 1.3,
+					speedY: -0.4,
 
-    .signature {
-      text-align: right;
-      color: var(--cor-principal);
-      font-weight: bold;
-      font-size: 1.2em;
-      margin-top: 40px;
-    }
+					fishImage: 'assets/tuna.png',
+					width: 180,
+					height: 100,
 
-    .back-link {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 12px 24px;
-      background: var(--cor-principal);
-      color: white;
-      text-decoration: none;
-      border-radius: 25px;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
+					color: 0x9370db,
+					popupImage:
+						'assets/for_you_the_best.jpeg',
+					title: 'For you, the best',
+					message: 'E que laços se tornem eternos. Para você, Leo, desejo o que melhor que possa haver e nada menos. E que qualquer coisa boa venha maior do que qualquer expectativa.',
+				},
+			];
 
-    .back-link:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-    }
+			// ============================================
+			// CLASSE PRINCIPAL DO JOGO
+			// ============================================
+			class FishingGame extends Phaser.Scene {
+				constructor() {
+					super({ key: 'FishingGame' });
 
-    .center {
-      text-align: center;
-    }
-  </style>
-</head>
-<body>
-  <div class="card">
-    <h1>Feliz Aniversario Leo!</h1>
-    <h2>De: Kethlen</h2>
+					// Variáveis do jogo
+					this.score = 0; // Pontuação atual
+					this.fishes = []; // Array com todos os peixes na tela
+					this.caughtFishIds = new Set(); // IDs dos peixes já capturados
+					this.angle = 90; // Ângulo inicial (0-180 graus)
+					this.power = 360; // Força fixa do lançamento
+					this.hook = null; // Objeto do anzol
+					this.fishingLine = null; // Linha de pesca
+					this.isLaunching = false; // Indica se está lançando
+				}
+				safeTargets(targets) {
+					// targets pode ser um array ou um item único
+					let arr = Array.isArray(targets) ? targets.slice() : [targets];
+					arr = arr.filter((t) => t && t.scene && !t.destroyed); // mantém só GameObjects válidos
+					return arr;
+				}
 
-    <p class="message">
-      Leo, espero que este dia seja repleto de alegria e momentos especiais!
-      
-      Que este novo ano de vida traga muitas realizacoes, sorrisos e conquistas incriveis.
-      Voce merece tudo de melhor que a vida tem a oferecer.
-      
-      Obrigada por fazer parte da minha vida e por todos os momentos que compartilhamos.
-    </p>
+				// ============================================
+				// PRELOAD - Carrega recursos antes do jogo
+				// ============================================
+				preload() {
+					// Carregar imagens dos peixes (se fornecidas e não forem placeholders)
+					FISH_CONFIG.forEach((config) => {
+						if (config.fishImage && !config.fishImage.includes('placeholder')) {
+							this.load.image('fish_' + config.id, config.fishImage);
+						}
+						// Carregar imagens dos pop-ups (se fornecidas e não forem placeholders)
+						if (
+							config.popupImage &&
+							!config.popupImage.includes('placeholder')
+						) {
+							this.load.image('popup_' + config.id, config.popupImage);
+						}
+					});
+				}
 
-    <div class="signature">
-      Com carinho,<br>
-      Kethlen
-    </div>
+				// ============================================
+				// CREATE - Inicializa o jogo
+				// ============================================
+				create() {
+					// -------- BACKGROUND --------
+					// Cria o fundo azul do jogo (céu/água)
+					this.add.rectangle(400, 300, 800, 600, 0x87ceeb);
 
-    <div class="center">
-      <a href="../../index.html" class="back-link">Voltar para todas as mensagens</a>
-    </div>
-  </div>
-</body>
+					// -------- CRIAR PEIXES --------
+					this.createFishes();
+
+					// -------- PONTO DE LANÇAMENTO --------
+					// Define de onde a isca será lançada (canto inferior central)
+					this.launchPoint = { x: 400, y: 600 };
+
+					// -------- VARA DE PESCA --------
+					// Desenha a vara de pesca (linha marrom) no centro inferior
+					this.fishingRod = this.add.line(
+						0,
+						0,
+						this.launchPoint.x,
+						this.launchPoint.y,
+						this.launchPoint.x,
+						this.launchPoint.y + 50,
+						0x8b4513,
+						1,
+					);
+					this.fishingRod.setLineWidth(6);
+					this.fishingRod.setOrigin(0, 0);
+
+					// -------- ANZOL --------
+					// Cria o anzol (círculo vermelho)
+					this.hook = this.add.circle(
+						this.launchPoint.x,
+						this.launchPoint.y,
+						8,
+						0xff0000,
+					);
+					this.hook.setStrokeStyle(2, 0x000000);
+
+					// -------- LINHA DE PESCA --------
+					// Linha que conecta a vara ao anzol
+					this.fishingLine = this.add.line(
+						0,
+						0,
+						this.launchPoint.x,
+						this.launchPoint.y,
+						this.launchPoint.x,
+						this.launchPoint.y,
+						0x000000,
+						1,
+					);
+					this.fishingLine.setLineWidth(2);
+					this.fishingLine.setOrigin(0, 0);
+
+					// -------- UI - MEDIDOR DE ÂNGULO --------
+					this.createAngleMeter();
+
+					// -------- UI - SCORE --------
+					// Texto do score no canto superior esquerdo
+					this.scoreText = this.add.text(20, 20, 'Score: 0', {
+						fontSize: '32px',
+						fontStyle: 'bold',
+						color: '#000000',
+						stroke: '#FFFFFF',
+						strokeThickness: 4,
+					});
+
+					// -------- CONTROLES DE TECLADO --------
+					// ESPAÇO para parar o medidor e lançar
+					this.input.keyboard.on('keydown-SPACE', () => this.launchHook());
+
+					// -------- INSTRUÇÕES --------
+					this.add
+						.text(400, 30, 'Pressione ESPAÇO para parar o medidor e lançar!', {
+							fontSize: '16px',
+							fontStyle: 'bold',
+							color: '#000000',
+							stroke: '#FFFFFF',
+							strokeThickness: 3,
+						})
+						.setOrigin(0.5);
+				}
+
+				// ============================================
+				// CRIAR PEIXES NA TELA
+				// ============================================
+				createFishes() {
+					FISH_CONFIG.forEach((config) => {
+						// Só cria o peixe se ainda não foi capturado
+						if (!this.caughtFishIds.has(config.id)) {
+							let fish;
+
+							// Se tem imagem customizada, usa a imagem
+							if (
+								config.fishImage &&
+								this.textures.exists('fish_' + config.id)
+							) {
+								fish = this.add.image(config.x, config.y, 'fish_' + config.id);
+
+								const width = config.width ?? config.size;
+								const height = config.height ?? config.size;
+								fish.setDisplaySize(width, height);
+
+								// Orientação inicial baseada em velocidade (só para Images/Sprites)
+								if (typeof fish.setFlipX === 'function') {
+									fish.setFlipX(config.speedX < 0);
+								}
+							}
+							// Senão, usa um círculo colorido
+							else {
+								fish = this.add.circle(
+									config.x,
+									config.y,
+									config.size / 2,
+									config.color,
+								);
+								fish.setStrokeStyle(3, 0x000000);
+
+								// Adicionar olho ao peixe (só para círculos)
+								const eye = this.add.circle(
+									config.x + config.size / 4,
+									config.y - config.size / 6,
+									config.size / 8,
+									0xffffff,
+								);
+								eye.setStrokeStyle(1, 0x000000);
+
+								const pupil = this.add.circle(
+									config.x + config.size / 4,
+									config.y - config.size / 6,
+									config.size / 16,
+									0x000000,
+								);
+
+								// Guardar referências dos olhos
+								fish.eye = eye;
+								fish.pupil = pupil;
+							}
+
+							// Guardar dados do peixe
+							fish.fishData = config;
+							fish.hitArea = new Phaser.Geom.Circle(0, 0, config.size / 2);
+
+							// Guardar velocidades iniciais
+							fish.velocityX = config.speedX;
+							fish.velocityY = config.speedY;
+
+							this.fishes.push(fish);
+						}
+					});
+				}
+
+				// ============================================
+				// CRIAR MEDIDOR DE ÂNGULO (ESTILO ARCADE)
+				// ============================================
+				createAngleMeter() {
+					const x = 400; // Posição X do medidor (centro)
+					const y = 600; // Posição Y do medidor (parte inferior)
+					const radius = 80; // Raio do medidor
+
+					// -------- FUNDO DO MEDIDOR (SEMICÍRCULO COM ARCO PARA CIMA) --------
+					const semicircle = this.add.graphics();
+
+					// Borda externa (cinza escuro)
+					semicircle.fillStyle(0x333333, 1);
+					semicircle.slice(
+						x,
+						y,
+						radius + 5,
+						Phaser.Math.DegToRad(180),
+						Phaser.Math.DegToRad(360),
+						false,
+					);
+					semicircle.fillPath();
+
+					// Preenchimento interno (branco)
+					semicircle.fillStyle(0xffffff, 1);
+					semicircle.slice(
+						x,
+						y,
+						radius,
+						Phaser.Math.DegToRad(180),
+						Phaser.Math.DegToRad(360),
+						false,
+					);
+					semicircle.fillPath();
+
+					// -------- MARCAÇÕES DO MEDIDOR --------
+					// Desenha marcações de 0 a 180 graus a cada 15 graus
+					for (let i = 0; i <= 180; i += 15) {
+						const rad = Phaser.Math.DegToRad(i);
+						const x1 = x + Math.cos(rad) * (radius - 10);
+						const y1 = y - Math.sin(rad) * (radius - 10);
+						const x2 = x + Math.cos(rad) * radius;
+						const y2 = y - Math.sin(rad) * radius;
+
+						const lineWidth = i % 30 === 0 ? 3 : 2; // Linhas mais grossas a cada 30°
+						this.add
+							.line(0, 0, x1, y1, x2, y2, 0x000000, 1)
+							.setLineWidth(lineWidth)
+							.setOrigin(0, 0);
+
+						// Adicionar números
+						if (i % 45 === 0) {
+							const textX = x + Math.cos(rad) * (radius - 25);
+							const textY = y - Math.sin(rad) * (radius - 25);
+							this.add
+								.text(textX, textY, i + '°', {
+									fontSize: '14px',
+									color: '#000000',
+									fontStyle: 'bold',
+								})
+								.setOrigin(0.5);
+						}
+					}
+
+					// -------- PONTEIRO DO ÂNGULO --------
+					this.anglePointer = this.add.line(
+						0,
+						0,
+						x,
+						y,
+						x + radius - 5,
+						y,
+						0xff0000,
+						1,
+					);
+					this.anglePointer.setLineWidth(5);
+					this.anglePointer.setOrigin(0, 0);
+
+					// -------- TEXTO DO ÂNGULO --------
+					this.angleText = this.add
+						.text(x, y - 10, '90°', {
+							fontSize: '24px',
+							fontStyle: 'bold',
+							color: '#FF0000',
+							stroke: '#FFFFFF',
+							strokeThickness: 4,
+						})
+						.setOrigin(0.5);
+
+					// Guardar dados para atualização
+					this.angleMeterData = { x, y, radius };
+
+					// -------- MODO ARCADE: MOVIMENTO AUTOMÁTICO --------
+					this.angleDirection = 1; // 1 = aumentando, -1 = diminuindo
+					this.arcadeMode = true; // Medidor se move automaticamente
+
+					this.updateAngleMeter();
+				}
+
+				// ============================================
+				// ATUALIZAR MEDIDOR DE ÂNGULO
+				// ============================================
+				updateAngleMeter() {
+					const { x, y, radius } = this.angleMeterData;
+
+					// Calcular posição do ponteiro baseado no ângulo
+					const rad = Phaser.Math.DegToRad(this.angle);
+					const endX = x + Math.cos(rad) * (radius - 5);
+					const endY = y - Math.sin(rad) * (radius - 5);
+
+					// Atualizar ponteiro
+					this.anglePointer.setTo(x, y, endX, endY);
+
+					// Atualizar texto
+					this.angleText.setText(this.angle + '°');
+				}
+
+				// ============================================
+				// LANÇAR ANZOL
+				// ============================================
+				launchHook() {
+					// Prevenir múltiplos lançamentos simultâneos
+					if (this.isLaunching) return;
+
+					// -------- PARAR O MEDIDOR ARCADE --------
+					this.arcadeMode = false;
+
+					this.isLaunching = true;
+
+					// -------- CALCULAR TRAJETÓRIA --------
+					// Converte ângulo para radianos
+					const rad = Phaser.Math.DegToRad(this.angle);
+
+					// Calcula velocidade horizontal e vertical
+					const vx = Math.cos(rad) * this.power;
+					const vy = -Math.sin(rad) * this.power;
+
+					// -------- ANIMAR O ANZOL --------
+					this.tweens.add({
+						targets: this.hook,
+						x: this.launchPoint.x + vx,
+						y: this.launchPoint.y + vy,
+						duration: 1000,
+						ease: 'Quad.easeOut',
+						onUpdate: () => {
+							// Atualizar linha de pesca durante o movimento
+							this.fishingLine.setTo(
+								this.launchPoint.x,
+								this.launchPoint.y,
+								this.hook.x,
+								this.hook.y,
+							);
+
+							// Verificar se acertou algum peixe
+							this.checkFishCollision();
+						},
+						onComplete: () => {
+							// Retornar o anzol se não pegou nada
+							this.returnHook();
+						},
+					});
+				}
+
+				// ============================================
+				// VERIFICAR COLISÃO COM PEIXES
+				// ============================================
+				checkFishCollision() {
+					if (!this.hook) return;
+					const hookRadius = this.hook.displayWidth
+						? Math.max(this.hook.displayWidth, this.hook.displayHeight) / 2
+						: 8;
+
+					this.fishes.forEach((fish) => {
+						if (!fish || !fish.active) return;
+
+						// distância entre anzol e peixe
+						const distance = Phaser.Math.Distance.Between(
+							this.hook.x,
+							this.hook.y,
+							fish.x,
+							fish.y,
+						);
+
+						// calcula radius do peixe de forma robusta
+						const fishRadius = fish.displayWidth
+							? Math.max(fish.displayWidth, fish.displayHeight) / 2
+							: fish.fishData.size / 2;
+
+						if (distance < fishRadius + hookRadius) {
+							// debounce/lock para evitar múltiplas chamadas concorrentes
+							if (fish.__capturing) return;
+							fish.__capturing = true;
+							this.catchFish(fish);
+						}
+					});
+				}
+
+				// ============================================
+				// CAPTURAR PEIXE
+				// ============================================
+				catchFish(fish, index) {
+					// Desativa o peixe para não capturar novamente
+					fish.setActive(false);
+					this.caughtFishIds.add(fish.fishData.id);
+
+					// Para o movimento do anzol
+					this.tweens.killTweensOf(this.hook);
+
+					// -------- PUXAR O PEIXE --------
+					// Lista de objetos para animar (peixe e olhos, se tiver)
+					const objectsToMove = [fish];
+					if (fish.eye) objectsToMove.push(fish.eye);
+					if (fish.pupil) objectsToMove.push(fish.pupil);
+
+					this.tweens.add({
+						targets: objectsToMove,
+						x: this.launchPoint.x,
+						y: this.launchPoint.y,
+						duration: 800,
+						ease: 'Power2',
+						onUpdate: () => {
+							// Atualizar linha de pesca durante o puxão
+							this.fishingLine.setTo(
+								this.launchPoint.x,
+								this.launchPoint.y,
+								fish.x,
+								fish.y,
+							);
+							// Anzol acompanha o peixe
+							this.hook.x = fish.x;
+							this.hook.y = fish.y;
+						},
+						onComplete: () => {
+							// Esconder peixe após captura
+							fish.setVisible(false);
+							if (fish.eye) fish.eye.setVisible(false);
+							if (fish.pupil) fish.pupil.setVisible(false);
+
+							// -------- INCREMENTAR SCORE --------
+							this.score++;
+							this.scoreText.setText('Score: ' + this.score);
+
+							// -------- MOSTRAR POP-UP --------
+							this.showFishPopup(fish.fishData);
+
+							// Retornar anzol
+							this.returnHook();
+						},
+					});
+				}
+
+				// ============================================
+				// RETORNAR ANZOL
+				// ============================================
+				returnHook() {
+					this.tweens.add({
+						targets: this.hook,
+						x: this.launchPoint.x,
+						y: this.launchPoint.y,
+						duration: 500,
+						ease: 'Power2',
+						onUpdate: () => {
+							// Atualizar linha durante o retorno
+							this.fishingLine.setTo(
+								this.launchPoint.x,
+								this.launchPoint.y,
+								this.hook.x,
+								this.hook.y,
+							);
+						},
+						onComplete: () => {
+							// Liberar para novo lançamento
+							this.isLaunching = false;
+
+							// Reativar modo arcade
+							this.arcadeMode = true;
+
+							// Verificar se ganhou (pescou todos)
+							if (this.score === FISH_CONFIG.length) {
+								this.arcadeMode = false; // Para o medidor na vitória
+								this.showVictoryPopup();
+							}
+						},
+					});
+				}
+
+				// ============================================
+				// MOSTRAR POP-UP DO PEIXE CAPTURADO
+				// ============================================
+				showFishPopup(fishData) {
+					// -------- OVERLAY ESCURO --------
+					const overlay = this.add.rectangle(400, 300, 800, 600, 0x000000, 0.7);
+					overlay.setInteractive();
+
+					// -------- CONTAINER DO MODAL --------
+					const modal = this.add.container(400, 300);
+
+					// Fundo branco do modal
+					const bg = this.add.rectangle(0, 0, 450, 400, 0xffffff);
+					bg.setStrokeStyle(6, 0x000000);
+
+					// -------- IMAGEM DO PEIXE --------
+					let fishDisplay;
+					if (
+						fishData.popupImage &&
+						!fishData.popupImage.includes('placeholder') &&
+						this.textures.exists('popup_' + fishData.id)
+					) {
+						// Usar imagem customizada
+						fishDisplay = this.add.image(0, -100, 'popup_' + fishData.id);
+						fishDisplay.setDisplaySize(150, 150);
+					} else {
+						// Usar círculo colorido
+						fishDisplay = this.add.circle(0, -100, 60, fishData.color);
+						fishDisplay.setStrokeStyle(5, 0x000000);
+					}
+
+					// -------- TÍTULO --------
+					// Texto do título do pop-up
+					const title = this.add
+						.text(0, 0, fishData.title, {
+							fontSize: '32px',
+							fontStyle: 'bold',
+							color: '#2C3E50',
+						})
+						.setOrigin(0.5);
+
+					// -------- MENSAGEM --------
+					// Texto da mensagem do pop-up
+					const message = this.add
+						.text(0, 60, fishData.message, {
+							fontSize: '18px',
+							color: '#555555',
+							align: 'center',
+							wordWrap: { width: 400 },
+						})
+						.setOrigin(0.5);
+
+					// -------- BOTÃO CONTINUAR --------
+					const button = this.add.rectangle(0, 150, 140, 45, 0x3498db);
+					button.setInteractive({ useHandCursor: true });
+
+					const buttonText = this.add
+						.text(0, 150, 'Continuar', {
+							fontSize: '20px',
+							fontStyle: 'bold',
+							color: '#FFFFFF',
+						})
+						.setOrigin(0.5);
+
+					// Efeitos do botão
+					button.on('pointerover', () => button.setFillStyle(0x2980b9));
+					button.on('pointerout', () => button.setFillStyle(0x3498db));
+					button.on('pointerdown', () => {
+						// Fechar modal
+						modal.destroy();
+						overlay.destroy();
+					});
+
+					// Adicionar todos os elementos ao modal
+					modal.add([bg, fishDisplay, title, message, button, buttonText]);
+				}
+
+				// ============================================
+				// MOSTRAR POP-UP DE VITÓRIA
+				// ============================================
+				showVictoryPopup() {
+					// -------- OVERLAY ESCURO --------
+					const overlay = this.add.rectangle(400, 300, 800, 600, 0x000000, 0.8);
+					overlay.setInteractive();
+
+					// -------- CONTAINER DO MODAL --------
+					const modal = this.add.container(400, 300);
+
+					// Fundo colorido do modal de vitória
+					const bg = this.add.rectangle(0, 0, 550, 350, 0x667eea);
+					bg.setStrokeStyle(6, 0xffffff);
+
+					// -------- TÍTULO --------
+					const title = this.add
+						.text(0, -100, '🎉 PARABÉNS! 🎉', {
+							fontSize: '42px',
+							fontStyle: 'bold',
+							color: '#FFFFFF',
+							stroke: '#000000',
+							strokeThickness: 4,
+						})
+						.setOrigin(0.5);
+
+					// -------- MENSAGEM --------
+					const message = this.add
+						.text(0, -30, 'Você pescou todos os peixes!\nFeliz aniversário!', {
+							fontSize: '24px',
+							color: '#F0F0F0',
+							align: 'center',
+							fontStyle: 'bold',
+						})
+						.setOrigin(0.5);
+
+					// -------- PONTUAÇÃO --------
+					const scoreMsg = this.add
+						.text(
+							0,
+							40,
+							`Pontuação Final: ${this.score}/${FISH_CONFIG.length}`,
+							{
+								fontSize: '20px',
+								color: '#FFFFFF',
+								fontStyle: 'bold',
+							},
+						)
+						.setOrigin(0.5);
+
+					// -------- BOTÃO JOGAR NOVAMENTE --------
+					const button = this.add.rectangle(0, 110, 180, 50, 0xe74c3c);
+					button.setInteractive({ useHandCursor: true });
+
+					const buttonText = this.add
+						.text(0, 110, 'Jogar Novamente', {
+							fontSize: '18px',
+							fontStyle: 'bold',
+							color: '#FFFFFF',
+						})
+						.setOrigin(0.5);
+
+					// Efeitos do botão
+					button.on('pointerover', () => button.setFillStyle(0xc0392b));
+					button.on('pointerout', () => button.setFillStyle(0xe74c3c));
+					button.on('pointerdown', () => {
+						// Reiniciar o jogo
+						this.scene.restart();
+					});
+
+					// Adicionar todos os elementos ao modal
+					modal.add([bg, title, message, scoreMsg, button, buttonText]);
+				}
+
+				// ============================================
+				// UPDATE - Loop do jogo (executado a cada frame)
+				// ============================================
+				update() {
+					// -------- MODO ARCADE: MOVIMENTO AUTOMÁTICO DO ÂNGULO --------
+					if (this.arcadeMode && !this.isLaunching) {
+						// Velocidade do movimento (graus por frame)
+						const speed = 2;
+
+						// Atualizar ângulo
+						this.angle += this.angleDirection * speed;
+
+						// Inverter direção quando chega nos limites
+						if (this.angle >= 180) {
+							this.angle = 180;
+							this.angleDirection = -1;
+						} else if (this.angle <= 0) {
+							this.angle = 0;
+							this.angleDirection = 1;
+						}
+
+						// Atualizar o medidor visual
+						this.updateAngleMeter();
+					}
+
+					// -------- ANIMAÇÃO DOS PEIXES --------
+					// Faz os peixes se moverem livremente
+					this.fishes.forEach((fish, i) => {
+						if (fish.active && fish.visible) {
+							// Movimento horizontal
+							fish.x += fish.velocityX;
+
+							// Movimento vertical
+							fish.y += fish.velocityY;
+
+							// Limites da tela (área acima do lançador)
+							const margin = fish.fishData.size;
+
+							// Rebater nas bordas horizontais
+							if (fish.x - margin < 0) {
+								fish.x = margin;
+
+								fish.velocityX = Math.abs(fish.velocityX);
+
+								if (fish.setFlipX) {
+									fish.setFlipX(false); // olhando para a direita
+								}
+
+								fish.setFlipX(false); // olhando para a direita
+							} else if (fish.x + margin > 800) {
+								fish.x = 800 - margin;
+
+								fish.velocityX = -Math.abs(fish.velocityX);
+
+								if (fish.setFlipX) {
+									fish.setFlipX(true); // olhando para a esquerda
+								}
+							}
+
+							// Rebater nas bordas verticais (mantém acima do lançador)
+							if (fish.y - margin < 0) {
+								fish.y = margin;
+								fish.velocityY = Math.abs(fish.velocityY);
+							} else if (fish.y + margin > 480) {
+								// Limite superior do lançador
+								fish.y = 480 - margin;
+								fish.velocityY = -Math.abs(fish.velocityY);
+							}
+
+							// Se o peixe tem olhos, move junto
+							if (fish.eye) {
+								fish.eye.x = fish.x + fish.fishData.size / 4;
+								fish.eye.y = fish.y - fish.fishData.size / 6;
+								fish.pupil.x = fish.x + fish.fishData.size / 4;
+								fish.pupil.y = fish.y - fish.fishData.size / 6;
+							}
+						}
+					});
+				}
+			}
+
+			// ============================================
+			// CONFIGURAÇÃO DO PHASER
+			// ============================================
+			const config = {
+				type: Phaser.AUTO, // Renderização automática (WebGL ou Canvas)
+				width: 800, // Largura da tela
+				height: 600, // Altura da tela
+				parent: 'game-container', // Elemento HTML onde o jogo será inserido
+				scene: FishingGame, // Cena principal do jogo
+				backgroundColor: '#87CEEB', // Cor de fundo azul céu
+			};
+
+			// -------- INICIAR O JOGO --------
+			const game = new Phaser.Game(config);
+		</script>
+	</body>
 </html>
