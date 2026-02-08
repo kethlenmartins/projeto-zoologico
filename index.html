@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Feliz Aniversario Leo</title>
+  <link rel="icon" href="favicon.png" type="image/x-icon">
+  <title>Feliz Aniversário Leo!</title>
 
   <style>
     * {
@@ -12,34 +13,137 @@
       box-sizing: border-box;
     }
 
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(5deg); }
+    }
+
+    @keyframes glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), inset 0 0 20px rgba(0, 255, 255, 0.2); }
+      50% { box-shadow: 0 0 40px rgba(0, 255, 255, 0.8), inset 0 0 30px rgba(0, 255, 255, 0.4); }
+    }
+
+    /* Fogos de Artifício Simplificados */
+    @keyframes burst {
+      0% { transform: scale(0); opacity: 1; }
+      50% { opacity: 1; }
+      100% { transform: scale(1.5); opacity: 0; }
+    }
+
+    .firework {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 6;
+    }
+
+    .firework::before {
+      content: '';
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      left: -45px;
+      top: -45px;
+      background: radial-gradient(circle, #ff0 0%, #f0f 30%, transparent 70%);
+      border-radius: 50%;
+      animation: burst 1.5s infinite;
+    }
+
+    .firework:nth-child(2)::before {
+      animation-delay: 0.5s;
+      background: radial-gradient(circle, #0ff 0%, #00f 30%, transparent 70%);
+    }
+
+    .firework:nth-child(3)::before {
+      animation-delay: 1s;
+      background: radial-gradient(circle, #0f0 0%, #ff0 30%, transparent 70%);
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
+      font-family: 'Arial', sans-serif;
+      background: #0a0a1a;
       min-height: 100vh;
       display: flex;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Estrelas de fundo */
+    .stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 3s infinite;
+    }
+
+    .star.big {
+      width: 3px;
+      height: 3px;
+      background: cyan;
+    }
+
+    /* Ícones flutuantes */
+    .floating-icon {
+      position: fixed;
+      font-size: 2em;
+      animation: float 4s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 1;
     }
 
     .sidebar {
-      width: 25%;
-      background: white;
+      width: 280px;
+      background: transparent;
       padding: 40px 20px;
-      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
       position: fixed;
       height: 100vh;
       overflow-y: auto;
+      z-index: 10;
+    }
+
+    .sidebar-header {
+      background: linear-gradient(135deg, rgba(0, 150, 200, 0.3), rgba(0, 100, 150, 0.3));
+      border: 3px solid;
+      border-image: linear-gradient(135deg, #00ffff, #0088ff) 1;
+      border-radius: 15px;
+      padding: 25px 20px;
+      margin-bottom: 30px;
+      position: relative;
+      animation: glow 3s ease-in-out infinite;
     }
 
     .sidebar h1 {
-      color: #333;
+      color: #ffd700;
       font-size: 1.8em;
       margin-bottom: 10px;
       text-align: center;
+      font-weight: 800;
+      text-shadow: 0 0 20px rgba(255, 215, 0, 0.8),
+                   0 0 30px rgba(255, 215, 0, 0.6);
     }
 
     .sidebar .subtitle {
-      color: #666;
+      color: #ffffff;
       font-size: 0.9em;
-      margin-bottom: 30px;
       text-align: center;
       line-height: 1.4;
     }
@@ -49,38 +153,64 @@
     }
 
     .sidebar li {
-      margin: 15px 0;
+      margin: 12px 0;
     }
 
     .sidebar a {
-      display: block;
-      padding: 12px 16px;
-      background: #667eea;
-      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      background: linear-gradient(135deg, #5566ff, #7788ff);
+      border: 2px solid rgba(100, 150, 255, 0.5);
+      border-radius: 10px;
       text-decoration: none;
       color: white;
-      font-weight: 500;
+      font-weight: 600;
+      font-size: 1.05em;
       transition: all 0.3s;
-      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sidebar a::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .sidebar a:hover::before {
+      left: 100%;
     }
 
     .sidebar a:hover {
-      background: #764ba2;
       transform: translateX(5px);
+      background: linear-gradient(135deg, #6677ff, #8899ff);
+      box-shadow: 0 0 20px rgba(85, 102, 255, 0.6);
+    }
+
+    .gift-icon {
+      font-size: 1.3em;
     }
 
     .main-content {
-      margin-left: 25%;
-      width: 75%;
+      margin-left: 280px;
+      width: calc(100% - 280px);
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      position: relative;
+      z-index: 5;
     }
 
     .gallery-section {
-      height: 50vh;
-      padding: 40px;
-      background: white;
+      min-height: 50vh;
+      padding: 60px 60px 40px 60px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -88,62 +218,107 @@
     }
 
     .gallery-section h2 {
-      color: #333;
-      margin-bottom: 30px;
-      font-size: 2em;
+      color: #bb88ff;
+      margin-bottom: 40px;
+      font-size: 2.5em;
+      font-weight: 800;
+      text-align: center;
+      text-shadow: 0 0 20px rgba(187, 136, 255, 0.8),
+                   0 0 40px rgba(187, 136, 255, 0.5);
     }
 
     .gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 25px;
       width: 100%;
-      max-width: 1000px;
+      max-width: 1100px;
     }
 
-    .photo-placeholder {
+    .photo-card {
       aspect-ratio: 1;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border-radius: 12px;
+      background: linear-gradient(135deg, #6b5b95, #8b7ba8);
+      border: 3px solid rgba(150, 120, 200, 0.6);
+      border-radius: 20px;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       color: white;
-      font-size: 0.9em;
-      text-align: center;
+      transition: all 0.3s;
+      position: relative;
       padding: 20px;
-      transition: transform 0.3s;
     }
 
-    .photo-placeholder:hover {
-      transform: scale(1.05);
+    .photo-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 40px rgba(107, 91, 149, 0.6);
+      border-color: rgba(187, 136, 255, 0.8);
     }
+
+    .pixel-icon {
+      font-size: 4em;
+      margin-bottom: 15px;
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+    }
+
+    .photo-label {
+      font-size: 1.1em;
+      font-weight: 600;
+    }
+
+    .corner-dots {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: #ffd700;
+      border-radius: 50%;
+    }
+
+    .corner-dots.top-left { top: 10px; left: 10px; }
+    .corner-dots.bottom-right { bottom: 10px; right: 10px; }
 
     .text-section {
-      height: 50vh;
-      padding: 40px;
-      background: #fafafa;
+      min-height: 50vh;
+      padding: 40px 60px 60px 60px;
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
     }
 
     .text-content {
-      max-width: 800px;
+      max-width: 900px;
+      background: linear-gradient(135deg, rgba(20, 30, 50, 0.9), rgba(30, 40, 60, 0.9));
+      border: 3px solid rgba(100, 120, 180, 0.5);
+      border-radius: 20px;
+      padding: 50px 60px;
       text-align: center;
+      position: relative;
+      box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
     }
 
     .text-content h2 {
-      color: #333;
-      margin-bottom: 20px;
-      font-size: 2em;
+      color: #ffd700;
+      margin-bottom: 30px;
+      font-size: 2.3em;
+      font-weight: 800;
+      text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
     }
 
     .text-content p {
-      color: #555;
-      line-height: 1.8;
+      color: #ffffff;
+      line-height: 1.9;
       font-size: 1.1em;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
+    }
+
+    .footer-credit {
+      position: absolute;
+      bottom: 20px;
+      right: 30px;
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 0.85em;
     }
 
     @media (max-width: 768px) {
@@ -160,57 +335,174 @@
 
       .gallery {
         grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
       }
+
+      .gallery-section,
+      .text-section {
+        padding: 40px 20px;
+      }
+
+      .text-content {
+        padding: 30px 25px;
+      }
+    }
+
+    /* Scrollbar customizada */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(20, 20, 40, 0.5);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #5566ff, #7788ff);
+      border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, #6677ff, #8899ff);
     }
   </style>
 </head>
 <body>
+  <!-- Estrelas de fundo -->
+  <div class="stars" id="stars"></div>
+
+  <!-- Ícones flutuantes -->
+  <div class="floating-icon" style="top: 5%; left: 15%;">🎁</div>
+  <div class="floating-icon" style="top: 15%; right: 10%; animation-delay: 1s;">🎉</div>
+  <div class="floating-icon" style="top: 70%; left: 5%; animation-delay: 2s;">🎊</div>
+  <div class="floating-icon" style="bottom: 10%; right: 15%; animation-delay: 1.5s;">🎁</div>
+  <div class="floating-icon" style="top: 40%; right: 5%; animation-delay: 0.5s;">🎈</div>
+
   <aside class="sidebar">
-    <h1>Feliz Aniversario Leo!</h1>
-    <p class="subtitle">Seus amigos deixaram mensagens especiais para voce</p>
+    <div class="sidebar-header">
+      <h1>Feliz Aniversário<br>Leo!</h1>
+      <p class="subtitle">Deixamos mensagens para você!!!!</p>
+    </div>
     <ul>
-      <li><a href="mensagens/caio/index.html">Caio</a></li>
-      <li><a href="mensagens/flakas/index.html">Flakas</a></li>
-      <li><a href="mensagens/kethlen/index.html">Kethlen</a></li>
-      <li><a href="mensagens/professores/index.html">Professores</a></li>
-      <li><a href="mensagens/testa/index.html">Testa</a></li>
-      <li><a href="mensagens/will/index.html">Will</a></li>
-      <li><a href="mensagens/malu/index.html">Malu</a></li>
-      <li><a href="mensagens/marcus/index.html">Marcus</a></li>
-      <li><a href="mensagens/Fernando/index.html">Fernando</a></li>
-      <li><a href="mensagens/gi/index.html">Gi</a></li>
-      <li><a href="mensagens/marco/index.html">Marco</a></li>
+      <li><a href="mensagens/caio/index.html"><span>Caio</span><span class="gift-icon">🎁</span></a></li>
+      <li><a href="mensagens/flakas/index.html"><span>Flakas</span><span class="gift-icon">🎁</span></a></li>
+      <li><a href="mensagens/kethlen/index.html"><span>Kethlen</span><span class="gift-icon">🎁</span></a></li>
+      <li><a href="mensagens/professores/index.html"><span>Professores</span><span class="gift-icon">🎁</span></a></li>
+      <li><a href="mensagens/testa/index.html"><span>Testa</span><span class="gift-icon">🎁</span></a></li>
+      <li><a href="mensagens/will/index.html"><span>Will</span><span class="gift-icon">🎁</span></a></li>
+      <li><a href="mensagens/malu/index.html"><span>Malu</span><span class="gift-icon">🎁</span></a></li>
+      <li><a href="mensagens/marcus/index.html"><span>Marcus</span><span class="gift-icon">🎁</span></a></li>
+      <li><a href="mensagens/Fernando/index.html"><span>Fernando</span><span class="gift-icon">🎁</span></a></li>
+      <li><a href="mensagens/gi/index.html"><span>Gi</span><span class="gift-icon">🎁</span></a></li>
+      <li><a href="mensagens/marco/index.html"><span>Marco</span><span class="gift-icon">🎁</span></a></li>
     </ul>
   </aside>
 
   <main class="main-content">
-    <section class="gallery-section">
-      <h2>Momentos Especiais</h2>
-      <div class="gallery">
-        <div class="photo-placeholder">Foto 1</div>
-        <div class="photo-placeholder">Foto 2</div>
-        <div class="photo-placeholder">Foto 3</div>
-        <div class="photo-placeholder">Foto 4</div>
+    <section class="gallery-section" style="position: relative; overflow: hidden;">
+      <!-- Fogos de Artifício -->
+      <div class="firework" style="top: 20%; left: 20%;"></div>
+      <div class="firework" style="top: 15%; right: 25%;"></div>
+      <div class="firework" style="top: 40%; left: 10%;"></div>
+      <div class="firework" style="top: 30%; right: 10%;"></div>
+      
+      <h2 style="z-index: 7; position: relative;">Para o melhor presidente que o game lab já teve</h2>
+      <div style="display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 20px; z-index: 7; position: relative;">
+        <div style="max-width: 250px;">
+          <img src="mensagens/malu/WhatsApp%20Image%202026-02-06%20at%2010.36.24%20%281%29.jpeg" alt="Melhor Presidente" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 20px; box-shadow: 0 0 30px rgba(187, 136, 255, 0.8); border: 4px solid #ffd700; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+        </div>
+        <div style="max-width: 250px;">
+          <img src="favicon.png" alt="Icone Game Lab" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 20px; box-shadow: 0 0 30px rgba(0, 255, 255, 0.5); border: 4px solid #00ffff; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+        </div>
       </div>
+      
+      <!-- Ícones de festa extras -->
+      <div class="floating-icon" style="top: 10%; right: 30%; font-size: 3em;">🥳</div>
+      <div class="floating-icon" style="bottom: 20%; left: 20%; font-size: 2.5em; animation-delay: 0.7s;">🎂</div>
+      <div class="floating-icon" style="top: 50%; right: 15%; font-size: 3em; animation-delay: 1.2s;">✨</div>
     </section>
 
     <section class="text-section">
       <div class="text-content">
-        <h2>Uma Celebracao Especial</h2>
+        <h2>Uma Celebração Especial</h2>
         <p>
-          Leo, hoje celebramos nao apenas mais um ano de vida, mas todas as memorias 
-          e momentos incriveis que compartilhamos com voce.
+          Leo, hoje celebramos não apenas mais um ano de vida, mas todas as memórias 
+          e momentos incríveis que compartilhamos com você.
         </p>
         <p>
-          Seus amigos se reuniram para criar este espaco especial, onde cada um pode 
-          expressar o quanto voce e importante em nossas vidas.
+          Seus amigos se reuniram para criar este espaço especial, onde cada um pode 
+          expressar o quanto você é importante em nossas vidas.
         </p>
         <p>
-          Que este novo ciclo traga muitas alegrias, realizacoes e momentos inesqueciveis. 
-          Parabens!
+          Que este novo ciclo traga muitas alegrias, realizações e momentos inesquecíveis. 
+          Parabéns!
         </p>
+        <div class="footer-credit">© 2024 Leo's Pixel Party</div>
       </div>
     </section>
   </main>
+
+  <!-- Player do YouTube (Invisível) -->
+  <div id="music-container" style="position: absolute; left: -9999px; visibility: hidden;"></div>
+
+  <button id="musicToggle" style="
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: linear-gradient(135deg, #5566ff, #7788ff);
+    border: 2px solid #00ffff;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    font-family: 'Arial', sans-serif;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s;
+  " onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    <span id="music-icon">🎵</span>
+    <span id="music-text">Tocar Música</span>
+  </button>
+
+  <script>
+    const musicBtn = document.getElementById('musicToggle');
+    const musicContainer = document.getElementById('music-container');
+    const musicText = document.getElementById('music-text');
+    let isPlaying = false;
+
+    musicBtn.addEventListener('click', () => {
+      if (!isPlaying) {
+        musicContainer.innerHTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/P52crWWUnOw?autoplay=1&loop=1&playlist=P52crWWUnOw" frameborder="0" allow="autoplay"></iframe>`;
+        musicText.innerText = "Música Ativa";
+        musicBtn.style.background = "linear-gradient(135deg, #ff5566, #ff7788)";
+        musicBtn.style.borderColor = "#ff0000";
+        isPlaying = true;
+      } else {
+        musicContainer.innerHTML = "";
+        musicText.innerText = "Tocar Música";
+        musicBtn.style.background = "linear-gradient(135deg, #5566ff, #7788ff)";
+        musicBtn.style.borderColor = "#00ffff";
+        isPlaying = false;
+      }
+    });
+
+    // Gerar estrelas aleatórias
+    const starsContainer = document.getElementById('stars');
+    const starCount = 200;
+
+    for (let i = 0; i < starCount; i++) {
+      const star = document.createElement('div');
+      star.className = Math.random() > 0.8 ? 'star big' : 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 3 + 's';
+      star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+      starsContainer.appendChild(star);
+    }
+  </script>
 </body>
 </html>
