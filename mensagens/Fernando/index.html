@@ -1,0 +1,667 @@
+﻿<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Feliz Aniversário, Leozin da ZO!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg1: #8b0000;
+        --bg2: #d21414;
+        --accent: #ffffff;
+        --accent-2: #ff3b3b;
+        --text: #ffffff;
+        --muted: rgba(255, 255, 255, 0.78);
+        --glass: rgba(255, 255, 255, 0.12);
+        --shadow: 0 22px 70px rgba(0, 0, 0, 0.35);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        min-height: 100vh;
+        font-family: "Manrope", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top, rgba(255, 255, 255, 0.15), transparent 45%),
+          repeating-linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.12) 0px,
+            rgba(255, 255, 255, 0.12) 60px,
+            rgba(255, 255, 255, 0) 60px,
+            rgba(255, 255, 255, 0) 120px
+          ),
+          linear-gradient(135deg, var(--bg2), var(--bg1));
+        overflow: hidden;
+      }
+
+      .ambient {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      .orb {
+        position: absolute;
+        border-radius: 999px;
+        filter: blur(0px);
+        opacity: 0.35;
+        mix-blend-mode: screen;
+      }
+
+      .orb.one {
+        width: 260px;
+        height: 260px;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.8), transparent 70%);
+        top: -40px;
+        left: -60px;
+      }
+
+      .orb.two {
+        width: 340px;
+        height: 340px;
+        background: radial-gradient(circle, rgba(255, 90, 90, 0.8), transparent 70%);
+        bottom: -120px;
+        right: -80px;
+      }
+
+      .orb.three {
+        width: 180px;
+        height: 180px;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.6), transparent 70%);
+        top: 40%;
+        right: 10%;
+      }
+
+      main {
+        position: relative;
+        height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+      }
+
+      .card {
+        width: min(940px, 92vw);
+        height: fit-content;
+        max-height: 92vh;
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.04)),
+          repeating-linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.08) 0px,
+            rgba(255, 255, 255, 0.08) 14px,
+            rgba(255, 255, 255, 0) 14px,
+            rgba(255, 255, 255, 0) 28px
+          );
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: 28px;
+        box-shadow: var(--shadow);
+        padding: 28px;
+        display: grid;
+        grid-template-rows: auto auto auto;
+        gap: 18px;
+        backdrop-filter: blur(10px);
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .title {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(2rem, 4vw, 3.4rem);
+        letter-spacing: 1.5px;
+      }
+
+      .subtitle {
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .badge {
+        background: rgba(255, 255, 255, 0.15);
+        padding: 8px 16px;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.35);
+      }
+
+      .stage {
+        position: relative;
+        border-radius: 22px;
+        overflow: hidden;
+        background:
+          repeating-linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.2) 0px,
+            rgba(255, 255, 255, 0.2) 18px,
+            rgba(255, 255, 255, 0.02) 18px,
+            rgba(255, 255, 255, 0.02) 36px
+          ),
+          rgba(80, 0, 0, 0.45);
+        display: grid;
+        place-items: center;
+        max-height: 60vh;
+      }
+
+      .photo,
+      .clip {
+        position: relative;
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 60vh;
+        object-fit: contain;
+        opacity: 0;
+        transform: scale(1.02);
+        display: block;
+      }
+
+      .clip {
+        background: #000;
+      }
+
+      .hint {
+        position: absolute;
+        top: 18px;
+        right: 18px;
+        background: rgba(154, 0, 0, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        color: #fff;
+        padding: 10px 16px;
+        border-radius: 16px;
+        font-size: 0.85rem;
+        letter-spacing: 0.3px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        opacity: 0;
+      }
+
+      .hint strong {
+        color: #ffffff;
+      }
+
+      .message {
+        display: none;
+        text-align: left;
+        padding: 10px 8px 20px 8px;
+      }
+
+      .final-message {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background:
+          radial-gradient(circle at top, rgba(255, 255, 255, 0.16), transparent 45%),
+          repeating-linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.12) 0px,
+            rgba(255, 255, 255, 0.12) 60px,
+            rgba(255, 255, 255, 0) 60px,
+            rgba(255, 255, 255, 0) 120px
+          ),
+          linear-gradient(135deg, #b30000, #7a0000);
+        padding: 28px 20px;
+        overflow-y: auto;
+        z-index: 5;
+      }
+
+      .letter {
+        width: min(900px, 92vw);
+        background: rgba(255, 255, 255, 0.95);
+        color: #7a0000;
+        border-radius: 30px;
+        padding: clamp(24px, 4vw, 40px);
+        border: 3px solid rgba(122, 0, 0, 0.3);
+        box-shadow: 0 28px 80px rgba(0, 0, 0, 0.35);
+      }
+
+      .letter h2 {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(2.6rem, 5vw, 4rem);
+        letter-spacing: 1px;
+        margin-bottom: 16px;
+      }
+
+      .letter p {
+        font-size: clamp(1.05rem, 2vw, 1.2rem);
+        line-height: 1.8;
+      }
+
+      .surprise-btn {
+        margin-top: 24px;
+        border: none;
+        background: linear-gradient(135deg, #7a0000, #c40000);
+        color: #ffffff;
+        font-weight: 700;
+        padding: 14px 26px;
+        border-radius: 999px;
+        cursor: pointer;
+        font-size: 1rem;
+        box-shadow: 0 16px 30px rgba(122, 0, 0, 0.25);
+      }
+
+      .surprise-btn:focus {
+        outline: 3px solid rgba(122, 0, 0, 0.5);
+        outline-offset: 3px;
+      }
+
+      .surprise-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(10, 0, 0, 0.92);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        z-index: 8;
+      }
+
+      .surprise-frame {
+        width: min(1200px, 94vw);
+        height: min(720px, 86vh);
+        border: none;
+        border-radius: 18px;
+        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+      }
+
+      .message h2 {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(2.4rem, 4vw, 3.6rem);
+        letter-spacing: 1px;
+        margin-bottom: 14px;
+      }
+
+      .message p {
+        font-size: 1.05rem;
+        line-height: 1.7;
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+
+      .pulse {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+        color: #ffffff;
+      }
+
+      .pulse span {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #ff2d2d;
+        box-shadow: 0 0 12px rgba(255, 45, 45, 0.85);
+        animation: pulse 1.6s infinite ease-in-out;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(0.8);
+          opacity: 0.7;
+        }
+        50% {
+          transform: scale(1.2);
+          opacity: 1;
+        }
+      }
+
+      .start-overlay {
+        position: fixed;
+        inset: 0;
+        background:
+          repeating-linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.16) 0px,
+            rgba(255, 255, 255, 0.16) 70px,
+            rgba(255, 255, 255, 0) 70px,
+            rgba(255, 255, 255, 0) 140px
+          ),
+          rgba(90, 0, 0, 0.88);
+        display: grid;
+        place-items: center;
+        z-index: 10;
+        text-align: center;
+        padding: 24px;
+      }
+
+      .start-box {
+        max-width: 520px;
+        background: #CA3033;
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        border-radius: 24px;
+        padding: 28px;
+        box-shadow: var(--shadow);
+      }
+
+      .start-box h1 {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(2.2rem, 4vw, 3.2rem);
+        margin-bottom: 12px;
+      }
+
+      .start-box p {
+        color: var(--muted);
+        line-height: 1.6;
+        margin-bottom: 18px;
+      }
+
+      .btn {
+        border: none;
+        background: linear-gradient(135deg, #ffffff, #ffdbdb);
+        color: #7a0000;
+        font-weight: 700;
+        padding: 12px 24px;
+        border-radius: 999px;
+        cursor: pointer;
+        font-size: 1rem;
+      }
+
+      .btn:focus {
+        outline: 2px solid #fff;
+        outline-offset: 2px;
+      }
+
+      @media (max-width: 700px) {
+        .card {
+          padding: 20px;
+        }
+
+        header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .hint {
+          top: 12px;
+          right: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="ambient">
+      <div class="orb one"></div>
+      <div class="orb two"></div>
+      <div class="orb three"></div>
+    </div>
+
+    <div class="start-overlay" id="startOverlay">
+      <div class="start-box">
+        <h1>Hora da surpresa</h1>
+        <p>
+          Leo, esse HTML aqui é uma homenagem de LilFer777 a Leozin da ZO. <br>
+          Clica em começar aí pra ver o que preparei pra você.
+        </p>
+        <button class="btn" id="startBtn">Começar</button>
+      </div>
+    </div>
+
+    <main>
+      <div class="card">
+        <header>
+          <div>
+            <div class="title">Feliz Aniversário, Leo!</div>
+            <div class="subtitle">Uma sequência de memórias de Leozin da ZO ft. LilFer777.</div>
+          </div>
+          <div class="badge" id="countBadge">Preparando...</div>
+        </header>
+
+        <section class="stage">
+          <img class="photo" id="photo" alt="Memória com o Leonardo" />
+          <video class="clip" id="clip" playsinline></video>
+          <div class="hint" id="morePopup">
+            Ainda tem mais <strong id="remainingCount">0</strong>
+          </div>
+        </section>
+
+        <footer class="controls">
+          <div class="pulse"><span></span> Sequência automática</div>
+          <div id="statusText">Preparando a surpresa...</div>
+        </footer>
+      </div>
+    </main>
+
+    <section class="final-message" id="finalMessage">
+      <div class="letter">
+        <h2>Leo, parabéns!</h2>
+        <p>
+          Eu não costumo falar muito sobre sentimentos, e sendo sincero acho que isso é um defeito meu. Ao longo da vida, muitas pessoas passam pelo nosso caminho, mas poucas realmente merecem o nosso tempo. Você é uma dessas pessoas. Virou parte da minha história, da minha caminhada, virou minha família nessa jornada. <br>
+          Você me inspira de várias formas: pela dedicação, pela inteligência, pelo humor e pela calma. Estar com você quase sempre é a melhor escolha. Até uma volta no Shopping Eldorado perde a graça sem você. Obrigado por me aceitar como amigo e, mais ainda, por fazer questão da minha presença nos momentos importantes da sua vida. <br>
+          Depois de dois anos, posso dizer isso sem parecer gay: te amo, Leo. Que esse novo ciclo seja leve, cheio de conquistas (Avante Gaia!) e cercado de gente boa (LilFer vai estar sempre ao teu lado, então pode ficar despreocupado). <br>
+          Obrigado pelas risadas, pelas histórias que construímos juntos e por ser um dos meus melhores amigos. Aproveite o seu dia e saiba que a torcida aqui é sempre enorme por você. Vai Corinthians e vai CRB.
+          
+        </p>
+        <button class="surprise-btn" id="surpriseBtn">CLICA AQUI, JURO QUE VALE A PENA!</button>
+      </div>
+    </section>
+
+    <section class="surprise-overlay" id="surpriseOverlay">
+      <iframe
+        class="surprise-frame"
+        title="Surpresa"
+        loading="lazy"
+        src="https://inteli-college.github.io/2024-T0014-IN01-G05/index.html"
+      ></iframe>
+    </section>
+
+    <audio
+      id="bgAudio"
+      preload="auto"
+      src="assets/Hino%20do%20CRB%20-%20Clube%20de%20Regatas%20Brasil%20%20(%20AL%20)%20-%20Guia%20de%20M%C3%ADdia%20do%20Brasil%20(youtube).mp3"
+    ></audio>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script>
+      const imageFiles = [
+        "WhatsApp Image 2026-02-08 at 12.09.07.jpeg",
+        "WhatsApp Image 2026-02-08 at 12.09.07 (1).jpeg",
+        "WhatsApp Image 2026-02-08 at 12.09.07 (2).jpeg",
+        "WhatsApp Image 2026-02-08 at 12.09.07 (3).jpeg",
+        "WhatsApp Image 2026-02-08 at 12.09.07 (4).jpeg",
+        "WhatsApp Image 2026-02-08 at 12.09.07 (5).jpeg",
+        "WhatsApp Image 2026-02-08 at 12.09.07 (6).jpeg",
+        "WhatsApp Image 2026-02-08 at 12.09.07 (7).jpeg",
+        "WhatsApp Image 2026-02-08 at 12.09.07 (8).jpeg",
+        "WhatsApp Image 2026-02-08 at 12.09.07 (9).jpeg",
+        "WhatsApp Image 2026-02-08 at 12.09.07 (10).jpeg",
+        "WhatsApp Image 2026-02-08 at 12.09.07 (11).jpeg"
+      ];
+
+      const videoFiles = ["WhatsApp Video 2026-02-08 at 12.09.07.mp4"];
+
+      const photoEl = document.getElementById("photo");
+      const clipEl = document.getElementById("clip");
+      const finalMessageEl = document.getElementById("finalMessage");
+      const popupEl = document.getElementById("morePopup");
+      const remainingEl = document.getElementById("remainingCount");
+      const countBadge = document.getElementById("countBadge");
+      const statusText = document.getElementById("statusText");
+      const startOverlay = document.getElementById("startOverlay");
+      const startBtn = document.getElementById("startBtn");
+      const bgAudio = document.getElementById("bgAudio");
+      const surpriseBtn = document.getElementById("surpriseBtn");
+      const surpriseOverlay = document.getElementById("surpriseOverlay");
+
+      const makeUrl = (name) => encodeURI(`assets/${name}`);
+
+      clipEl.style.display = "none";
+      photoEl.style.display = "block";
+
+      const queue = [
+        ...videoFiles.map((file) => ({ type: "video", src: makeUrl(file) })),
+        ...imageFiles.map((file) => ({ type: "image", src: makeUrl(file) }))
+      ];
+
+      const totalPhotos = imageFiles.length;
+      countBadge.textContent = `${totalPhotos} fotos especiais`;
+
+      const showPopup = (remaining) => {
+        if (remaining <= 0) {
+          gsap.to(popupEl, { opacity: 0, duration: 0.4 });
+          return;
+        }
+        remainingEl.textContent = remaining;
+        gsap.fromTo(
+          popupEl,
+          { opacity: 0, y: -10 },
+          { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }
+        );
+      };
+
+      const wait = (time) => new Promise((resolve) => setTimeout(resolve, time));
+
+      const showImage = async (src, remaining) => {
+        clipEl.pause();
+        clipEl.style.opacity = 0;
+        clipEl.style.display = "none";
+        photoEl.style.display = "block";
+        photoEl.src = src;
+        photoEl.style.opacity = 0;
+
+        showPopup(remaining);
+        statusText.textContent = "Revendo momentos especiais...";
+
+        await gsap
+          .timeline()
+          .to(photoEl, { opacity: 1, scale: 1, duration: 1, ease: "power3.out" })
+          .to(photoEl, { opacity: 1, duration: 2.2 })
+          .to(photoEl, { opacity: 0, scale: 1.04, duration: 0.8, ease: "power2.in" })
+          .then();
+      };
+
+      const showVideo = async (src, remaining) => {
+        photoEl.style.opacity = 0;
+        photoEl.style.display = "none";
+        clipEl.style.display = "block";
+        clipEl.src = src;
+        clipEl.currentTime = 0;
+        clipEl.style.opacity = 0;
+        clipEl.muted = false;
+
+        showPopup(remaining);
+        statusText.textContent = "Tem vídeo também!";
+
+        await gsap
+          .timeline()
+          .to(clipEl, { opacity: 1, duration: 0.8, ease: "power2.out" })
+          .then();
+
+        try {
+          await clipEl.play();
+        } catch (err) {
+          clipEl.muted = true;
+          await clipEl.play();
+        }
+
+        await new Promise((resolve) => {
+          const timeout = setTimeout(resolve, 9000);
+          clipEl.onended = () => {
+            clearTimeout(timeout);
+            resolve();
+          };
+        });
+
+        await gsap.to(clipEl, { opacity: 0, duration: 0.7, ease: "power2.in" });
+      };
+
+      const runSequence = async () => {
+        for (let i = 0; i < queue.length; i += 1) {
+          const item = queue[i];
+          const remaining = queue.length - i - 1;
+          if (item.type === "video") {
+            await showVideo(item.src, remaining);
+          } else {
+            await showImage(item.src, remaining);
+          }
+        }
+
+        statusText.textContent = "Mensagem final";
+        popupEl.style.opacity = 0;
+        photoEl.style.opacity = 0;
+        clipEl.style.opacity = 0;
+        const cardEl = document.querySelector(".card");
+        if (cardEl) {
+          gsap.to(cardEl, {
+            opacity: 0,
+            y: -20,
+            duration: 0.6,
+            ease: "power2.in",
+            onComplete: () => {
+              cardEl.style.display = "none";
+            }
+          });
+        }
+
+        finalMessageEl.style.display = "flex";
+        gsap.fromTo(
+          finalMessageEl,
+          { opacity: 0 },
+          { opacity: 1, duration: 0.8, ease: "power2.out" }
+        );
+      };
+
+      const startExperience = async () => {
+        startOverlay.style.display = "none";
+        try {
+          await bgAudio.play();
+        } catch (err) {
+          // Audio pode ser bloqueado ate interacao; manter silencioso se necessario.
+        }
+        await wait(400);
+        runSequence();
+      };
+
+      startBtn.addEventListener("click", startExperience);
+
+      surpriseBtn.addEventListener("click", () => {
+        surpriseOverlay.style.display = "flex";
+      });
+
+      surpriseOverlay.addEventListener("click", (event) => {
+        if (event.target === surpriseOverlay) {
+          surpriseOverlay.style.display = "none";
+        }
+      });
+
+      // Tentativa inicial de tocar audio ao entrar
+      window.addEventListener("load", () => {
+        bgAudio.volume = 0.7;
+        bgAudio.play().catch(() => {
+          // Sem interacao: o overlay garante a reproducao
+        });
+      });
+    </script>
+  </body>
+</html>
+
