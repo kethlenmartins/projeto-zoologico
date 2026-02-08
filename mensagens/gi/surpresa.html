@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Surpresa do Leo</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Sora:wght@300;400;600;700&display=swap');
+
+    :root {
+      --bg-1: #0d0f1c;
+      --bg-2: #1a1d36;
+      --bg-3: #11131f;
+      --neon: #f83cff;
+      --cyan: #23d5ff;
+      --gold: #ffd86b;
+      --ink: #eef2ff;
+      --muted: #b5b9d6;
+      --card: rgba(255, 255, 255, 0.06);
+      --border: rgba(255, 255, 255, 0.12);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Sora', Arial, sans-serif;
+      color: var(--ink);
+      min-height: 100vh;
+      background: radial-gradient(1200px 700px at 10% 10%, #22264a 0%, transparent 60%),
+        radial-gradient(900px 500px at 80% 30%, #1b3a55 0%, transparent 65%),
+        linear-gradient(160deg, var(--bg-1), var(--bg-2) 55%, var(--bg-3));
+    }
+
+    .shell {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 24px 60px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.4rem, 4vw, 4rem);
+      letter-spacing: 2px;
+      color: var(--gold);
+    }
+
+    .subtitle {
+      color: var(--muted);
+      max-width: 680px;
+    }
+
+    .back-link {
+      text-decoration: none;
+      color: var(--ink);
+      border: 1px solid var(--border);
+      padding: 10px 16px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      font-weight: 600;
+      transition: transform 0.2s ease, border 0.2s ease;
+    }
+
+    .back-link:hover {
+      border-color: rgba(248, 60, 255, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .photo-card {
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--card);
+      position: relative;
+      aspect-ratio: 1 / 1;
+    }
+
+    .photo-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .photo-card span {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      right: 10px;
+      font-size: 0.8rem;
+      color: #fff;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+    }
+
+    .final-message {
+      margin-top: 32px;
+      padding: 24px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .final-message h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 1px;
+      color: var(--gold);
+      font-size: 2rem;
+    }
+
+    .final-message p {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .btn-open {
+      border: none;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-family: 'Sora', sans-serif;
+      cursor: pointer;
+      background: linear-gradient(120deg, var(--neon), var(--cyan));
+      color: #0b0d16;
+      box-shadow: 0 10px 25px rgba(248, 60, 255, 0.35);
+      transition: transform 0.2s ease;
+    }
+
+    .btn-open:hover {
+      transform: translateY(-2px);
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 10, 18, 0.75);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 20px;
+    }
+
+    .modal {
+      max-width: 560px;
+      background: #111428;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 26px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      text-align: left;
+    }
+
+    .modal h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 1px;
+      color: var(--gold);
+      font-size: 2rem;
+    }
+
+    .modal p {
+      color: var(--ink);
+      line-height: 1.7;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 640px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div>
+        <h1>Surpresa desbloqueada 🎉</h1>
+        <p class="subtitle">Galeria completa das fotos do Leo. Aproveita e revê os momentos!</p>
+      </div>
+      <a class="back-link" href="index.html">Voltar para a luta</a>
+    </header>
+
+    <section class="gallery">
+      <div class="photo-card"><img src="imagens/20240324_203007.jpg" alt="Foto 20240324_203007" /><span>24/03/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240324_203034.jpg" alt="Foto 20240324_203034" /><span>24/03/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240410_154931.jpg" alt="Foto 20240410_154931" /><span>10/04/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240410_154937.jpg" alt="Foto 20240410_154937" /><span>10/04/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240411_133611.jpg" alt="Foto 20240411_133611" /><span>11/04/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240411_133633.jpg" alt="Foto 20240411_133633" /><span>11/04/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240411_133727.jpg" alt="Foto 20240411_133727" /><span>11/04/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240424_154754.jpg" alt="Foto 20240424_154754" /><span>24/04/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240425_234659.jpg" alt="Foto 20240425_234659" /><span>25/04/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240427_000239.jpg" alt="Foto 20240427_000239" /><span>27/04/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240427_142105.jpg" alt="Foto 20240427_142105" /><span>27/04/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240508_185219.jpg" alt="Foto 20240508_185219" /><span>08/05/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240514_141716.jpg" alt="Foto 20240514_141716" /><span>14/05/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240605_094341.jpg" alt="Foto 20240605_094341" /><span>05/06/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240605_160743.jpg" alt="Foto 20240605_160743" /><span>05/06/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240607_123758.jpg" alt="Foto 20240607_123758" /><span>07/06/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240610_152102.jpg" alt="Foto 20240610_152102" /><span>10/06/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240611_130045.jpg" alt="Foto 20240611_130045" /><span>11/06/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240618_011238.jpg" alt="Foto 20240618_011238" /><span>18/06/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240806_122149.jpg" alt="Foto 20240806_122149" /><span>06/08/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240807_130950.jpg" alt="Foto 20240807_130950" /><span>07/08/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240812_115231.jpg" alt="Foto 20240812_115231" /><span>12/08/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240814_124354.jpg" alt="Foto 20240814_124354" /><span>14/08/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240820_140543.jpg" alt="Foto 20240820_140543" /><span>20/08/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240827_201847.jpg" alt="Foto 20240827_201847" /><span>27/08/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240909_073808.jpg" alt="Foto 20240909_073808" /><span>09/09/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240910_161705.jpg" alt="Foto 20240910_161705" /><span>10/09/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240911_192107.jpg" alt="Foto 20240911_192107" /><span>11/09/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240919_124620.jpg" alt="Foto 20240919_124620" /><span>19/09/2024</span></div>
+      <div class="photo-card"><img src="imagens/20240920_083921.jpg" alt="Foto 20240920_083921" /><span>20/09/2024</span></div>
+      <div class="photo-card"><img src="imagens/20241002_224353.jpg" alt="Foto 20241002_224353" /><span>02/10/2024</span></div>
+      <div class="photo-card"><img src="imagens/20241109_220503.jpg" alt="Foto 20241109_220503" /><span>09/11/2024</span></div>
+      <div class="photo-card"><img src="imagens/IMG-20240412-WA0051.jpg" alt="Foto IMG-20240412-WA0051" /><span>12/04/2024</span></div>
+      <div class="photo-card"><img src="imagens/IMG-20240421-WA0038.jpg" alt="Foto IMG-20240421-WA0038" /><span>21/04/2024</span></div>
+    </section>
+
+    <section class="final-message">
+      <h2>Chegou ao final 🎂</h2>
+      <p>Tem uma mensagem especial esperando por você, Leo.</p>
+      <button class="btn-open" id="open-message">Abrir mensagem</button>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="modal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <h3 id="modal-title">Feliz aniversário, Leo!</h3>
+      <p>Oii Leo! Primeiramente parabéns pelo seu dia, você é uma pessoa incrível (mas disso você já sabe), e merece o melhor que a vida tem a oferecer. Eu tenho muito orgulho da pessoa que você é de tudo que você vem conquistado. Saiba que eu me sinto honrada em ser sua amiga e sempre que precisar pode contar comigo...</p>
+      <p>Ps: eu não me lembrava de como começou a briga do Kanye com a Taylor, foi realmente um desafio pesquisar tudo.</p>
+      <p>Ps 2: eu perdi as fotos do ano passado, por isso só tem foto do primeiro ano. Mas é realmente incrível que você tenha conseguido manter todos os seus amigos do primeiro ano</p>
+      <p>Com carinho, Gi. 💛</p>
+      <div class="modal-actions">
+        <button class="btn-open" id="close-message">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('modal');
+    const openMessage = document.getElementById('open-message');
+    const closeMessage = document.getElementById('close-message');
+
+    openMessage.addEventListener('click', () => {
+      modal.style.display = 'flex';
+    });
+
+    closeMessage.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
