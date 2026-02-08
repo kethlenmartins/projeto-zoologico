@@ -88,7 +88,7 @@
 					popupImage:
 						'assets/naruto_kun.jpeg',
 					title: 'Naruto Kun',
-					message: 'Mais projetos, ciência da computação e aulas chatas. Mas, o que marco aqui é que você passou por isso com tudo que pôde. Com alegria, com amor, com meraki. Aqui, ressalto minha admiração por você ser quem você é.',
+					message: 'O tempo passou e foi intenso, mas que marco aqui é que você passou por isso com tudo que pôde. Com alegria, com amor, com meraki. Registro minha admiração por você ser quem você é.',
 				},
 				{
 					id: 4,
@@ -463,7 +463,7 @@
 
 					// -------- ANIMAR O ANZOL --------
 					this.tweens.add({
-						targets: this.hook,
+						targets: this.safeTargets(this.hook),
 						x: this.launchPoint.x + vx,
 						y: this.launchPoint.y + vy,
 						duration: 1000,
@@ -538,8 +538,8 @@
 					if (fish.eye) objectsToMove.push(fish.eye);
 					if (fish.pupil) objectsToMove.push(fish.pupil);
 
-					this.tweens.add({
-						targets: objectsToMove,
+					this.tweens.add({						
+						targets: this.safeTargets(objectsToMove),
 						x: this.launchPoint.x,
 						y: this.launchPoint.y,
 						duration: 800,
@@ -580,7 +580,7 @@
 				// ============================================
 				returnHook() {
 					this.tweens.add({
-						targets: this.hook,
+						targets: this.safeTargets(this.hook),
 						x: this.launchPoint.x,
 						y: this.launchPoint.y,
 						duration: 500,
@@ -603,8 +603,10 @@
 
 							// Verificar se ganhou (pescou todos)
 							if (this.score === FISH_CONFIG.length) {
-								this.arcadeMode = false; // Para o medidor na vitória
-								this.showVictoryPopup();
+								this.time.delayedCall(10000, () => {
+    								this.arcadeMode = false; // Para o medidor na vitória
+									this.showVictoryPopup();
+								}, [], this);
 							}
 						},
 					});
