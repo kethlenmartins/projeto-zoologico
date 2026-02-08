@@ -1,0 +1,315 @@
+/* ============================================
+   Animations & Transitions
+   ============================================ */
+
+/* Pulse Animation for Level Up */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Slide In From Left */
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Slide In From Right */
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Glitch Effect for Images */
+@keyframes glitch {
+    0% {
+        transform: translate(0);
+    }
+    20% {
+        transform: translate(-2px, 2px);
+    }
+    40% {
+        transform: translate(-2px, -2px);
+    }
+    60% {
+        transform: translate(2px, 2px);
+    }
+    80% {
+        transform: translate(2px, -2px);
+    }
+    100% {
+        transform: translate(0);
+    }
+}
+
+/* Typing Animation for Terminal */
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+/* Scale Up Animation */
+@keyframes scaleUp {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Shake Animation for Errors */
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-5px);
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateX(5px);
+    }
+}
+
+/* ============================================
+   Apply Animations to Elements
+   ============================================ */
+
+/* Scroll Reveal Animations */
+.fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+.slide-in-left {
+    animation: slideInLeft 0.8s ease-out forwards;
+}
+
+.slide-in-right {
+    animation: slideInRight 0.8s ease-out forwards;
+}
+
+/* Hero Section Animation */
+.hero-content {
+    animation: fadeIn 1s ease-out;
+}
+
+.hero-title {
+    animation: slideInLeft 1s ease-out 0.3s backwards;
+}
+
+.hero-subtitle {
+    animation: fadeIn 1s ease-out 0.6s backwards;
+}
+
+.play-button {
+    animation: scaleUp 0.5s ease-out 0.9s backwards;
+}
+
+/* Profile Stats Animation */
+.profile-image {
+    animation: slideInLeft 0.8s ease-out;
+}
+
+.profile-stats {
+    animation: slideInRight 0.8s ease-out 0.2s backwards;
+}
+
+.stat-item {
+    animation: fadeIn 0.6s ease-out backwards;
+}
+
+.stat-item:nth-child(1) { animation-delay: 0.1s; }
+.stat-item:nth-child(2) { animation-delay: 0.2s; }
+.stat-item:nth-child(3) { animation-delay: 0.3s; }
+.stat-item:nth-child(4) { animation-delay: 0.4s; }
+
+/* Game Cards Staggered Animation */
+.game-card {
+    animation: fadeIn 0.6s ease-out backwards;
+}
+
+.game-card:nth-child(1) { animation-delay: 0.1s; }
+.game-card:nth-child(2) { animation-delay: 0.2s; }
+.game-card:nth-child(3) { animation-delay: 0.3s; }
+
+/* Setlist Items Animation */
+.setlist-item {
+    animation: slideInLeft 0.5s ease-out backwards;
+}
+
+.setlist-item:nth-child(1) { animation-delay: 0.1s; }
+.setlist-item:nth-child(2) { animation-delay: 0.2s; }
+.setlist-item:nth-child(3) { animation-delay: 0.3s; }
+.setlist-item:nth-child(4) { animation-delay: 0.4s; }
+.setlist-item:nth-child(5) { animation-delay: 0.5s; }
+
+/* Gallery Items Animation */
+.gallery-item {
+    animation: scaleUp 0.5s ease-out backwards;
+}
+
+.gallery-item:nth-child(1) { animation-delay: 0.1s; }
+.gallery-item:nth-child(2) { animation-delay: 0.2s; }
+.gallery-item:nth-child(3) { animation-delay: 0.3s; }
+.gallery-item:nth-child(4) { animation-delay: 0.4s; }
+
+/* Quest Items Animation */
+.quest-item {
+    animation: slideInRight 0.5s ease-out backwards;
+}
+
+.quest-item:nth-child(1) { animation-delay: 0.1s; }
+.quest-item:nth-child(2) { animation-delay: 0.2s; }
+.quest-item:nth-child(3) { animation-delay: 0.3s; }
+.quest-item:nth-child(4) { animation-delay: 0.4s; }
+
+/* Modal Animation */
+.modal.active .modal-content {
+    animation: scaleUp 0.4s ease-out;
+}
+
+.modal-title {
+    animation: fadeIn 0.6s ease-out 0.2s backwards;
+}
+
+.level-up {
+    animation: pulse 1s infinite 0.4s;
+}
+
+.birthday-message {
+    animation: fadeIn 0.8s ease-out 0.6s backwards;
+}
+
+.signature {
+    animation: fadeIn 1s ease-out 1s backwards;
+}
+
+/* Terminal Cursor Blink */
+.terminal-input::after {
+    content: '▋';
+    color: var(--crb-red);
+    animation: blink 1s step-end infinite;
+    margin-left: 2px;
+}
+
+/* Glitch Effect on Hover */
+.gallery-item.glitch-effect:hover img {
+    animation: glitch 0.3s ease-in-out;
+}
+
+/* Button Press Effect */
+.play-button:active,
+.quest-item:active {
+    transform: scale(0.95);
+}
+
+/* Error Shake Animation */
+.terminal-input.error {
+    animation: shake 0.5s ease-in-out;
+}
+
+/* Loading Dots Animation */
+@keyframes loadingDots {
+    0%, 20% {
+        content: '.';
+    }
+    40% {
+        content: '..';
+    }
+    60%, 100% {
+        content: '...';
+    }
+}
+
+.loading::after {
+    content: '';
+    animation: loadingDots 1.5s infinite;
+}
+
+/* Smooth Scroll Behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Intersection Observer Animations */
+.reveal {
+    opacity: 100;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Parallax Effect for Hero */
+.hero.parallax {
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* Card Flip Animation */
+.game-card {
+    transform-style: preserve-3d;
+    transition: transform 0.6s ease;
+}
+
+.game-card.flipped {
+    transform: rotateY(180deg);
+}
+
+/* Theme Transition */
+body {
+    transition: background-color 0.5s ease,
+                color 0.5s ease,
+                filter 0.5s ease;
+}
+
+/* Hover Lift Effect */
+.hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(227, 6, 19, 0.2);
+}

@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feliz Aniversário, Leo</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Sora:wght@300;400;600;700&display=swap');
+
+    :root {
+      --bg-1: #0d0f1c;
+      --bg-2: #1a1d36;
+      --bg-3: #11131f;
+      --neon: #f83cff;
+      --cyan: #23d5ff;
+      --gold: #ffd86b;
+      --ink: #eef2ff;
+      --muted: #b5b9d6;
+      --card: rgba(255, 255, 255, 0.06);
+      --border: rgba(255, 255, 255, 0.12);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Sora', Arial, sans-serif;
+      color: var(--ink);
+      min-height: 100vh;
+      background: radial-gradient(1200px 700px at 10% 10%, #22264a 0%, transparent 60%),
+        radial-gradient(900px 500px at 80% 30%, #1b3a55 0%, transparent 65%),
+        linear-gradient(160deg, var(--bg-1), var(--bg-2) 55%, var(--bg-3));
+    }
+
+    .shell {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      padding: 32px 24px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glow-orb {
+      position: absolute;
+      width: 380px;
+      height: 380px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(248, 60, 255, 0.45), transparent 70%);
+      top: -120px;
+      right: -120px;
+      filter: blur(1px);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .glow-orb.secondary {
+      width: 300px;
+      height: 300px;
+      left: -120px;
+      bottom: 10%;
+      background: radial-gradient(circle at 70% 30%, rgba(35, 213, 255, 0.35), transparent 70%);
+    }
+
+    .fight-section {
+      position: relative;
+      z-index: 1;
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 32px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+    }
+
+    .fight-header {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .fight-header h1 {
+      font-family: 'Bebas Neue', 'Sora', sans-serif;
+      font-size: clamp(2.5rem, 4vw, 4.2rem);
+      letter-spacing: 2px;
+      color: var(--gold);
+    }
+
+    .fight-header p {
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 680px;
+    }
+
+    .controls-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 18px;
+      margin-top: 8px;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .pill {
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .game-wrap {
+      margin-top: 18px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #0b0d16;
+    }
+
+    #game-container {
+      width: 100%;
+      height: 100%;
+      min-height: 360px;
+    }
+
+    .fight-actions {
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    button {
+      border: none;
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-family: 'Sora', sans-serif;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(120deg, var(--neon), var(--cyan));
+      color: #0b0d16;
+      box-shadow: 0 10px 25px rgba(248, 60, 255, 0.35);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--ink);
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+    }
+
+    .unlock-banner {
+      margin-top: 16px;
+      padding: 14px 18px;
+      border-radius: 14px;
+      background: rgba(35, 213, 255, 0.1);
+      border: 1px solid rgba(35, 213, 255, 0.35);
+      color: var(--ink);
+      display: none;
+      position: relative;
+      z-index: 5;
+      cursor: pointer;
+      pointer-events: auto;
+    }
+
+    .unlock-banner strong {
+      color: var(--gold);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .celebration {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(240px, 0.8fr) minmax(300px, 2fr);
+      gap: 28px;
+    }
+
+    .side-panel {
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 24px;
+      background: var(--card);
+      backdrop-filter: blur(12px);
+      height: fit-content;
+    }
+
+    .side-panel h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 1px;
+      font-size: 2rem;
+      margin-bottom: 12px;
+      color: var(--gold);
+    }
+
+    .side-panel p {
+      color: var(--muted);
+      margin-bottom: 18px;
+      line-height: 1.6;
+    }
+
+    .message-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .message-links a {
+      text-decoration: none;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--ink);
+      border: 1px solid transparent;
+      transition: border 0.2s ease, transform 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .message-links a:hover {
+      border-color: rgba(248, 60, 255, 0.5);
+      transform: translateX(4px);
+    }
+
+    .celebration-main {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .panel {
+      border-radius: 22px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.04);
+      padding: 26px;
+    }
+
+    .panel h3 {
+      font-size: 1.6rem;
+      margin-bottom: 16px;
+      color: var(--gold);
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 1px;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+    }
+
+    .photo {
+      border-radius: 18px;
+      aspect-ratio: 1 / 1;
+      background: linear-gradient(140deg, rgba(248, 60, 255, 0.25), rgba(35, 213, 255, 0.25));
+      border: 1px dashed rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--muted);
+      padding: 18px;
+      font-size: 0.9rem;
+    }
+
+    .message-wall {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .message-card {
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 16px;
+      background: rgba(15, 17, 30, 0.7);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .message-card input,
+    .message-card textarea {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--ink);
+      padding: 10px 12px;
+      font-family: 'Sora', sans-serif;
+    }
+
+    .message-card textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .saved-messages {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .saved-message {
+      border-radius: 12px;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--muted);
+    }
+
+    .saved-message strong {
+      color: var(--gold);
+    }
+
+    @media (max-width: 960px) {
+      .celebration {
+        grid-template-columns: 1fr;
+      }
+
+      .fight-section {
+        padding: 24px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .shell {
+        padding: 24px 16px 48px;
+      }
+
+      .fight-header h1 {
+        font-size: 2.4rem;
+      }
+
+      .controls-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="glow-orb"></div>
+    <div class="glow-orb secondary"></div>
+
+    <section class="fight-section" id="fight-section">
+      <div class="fight-header">
+        <h1>Feliz Aniversário, Leo</h1>
+        <p>
+          Antes da festa, uma batalha histórica: Taylor Swift vs Kanye West. Se a Taylor vencer,
+          a página secreta do Leo é desbloqueada.
+        </p>
+        <div class="controls-row">
+          <span class="pill">Taylor: A/D (mover) + F (golpear)</span>
+          <span class="pill">Kanye: J/L (mover) + K (golpear)</span>
+          <span class="pill">Objetivo: zere a vida do Kanye</span>
+        </div>
+      </div>
+
+      <div class="game-wrap">
+        <div id="game-container"></div>
+      </div>
+
+      <div class="fight-actions">
+        <button class="btn-primary" id="start-fight">Iniciar luta</button>
+        <button class="btn-ghost" id="reset-fight">Resetar</button>
+        <button class="btn-ghost" id="skip-fight">Modo paz (desbloquear)</button>
+      </div>
+
+      <div class="unlock-banner" id="unlock-banner">
+        <strong>GG!</strong> A Taylor venceu. Clique no banner para abrir a surpresa.
+      </div>
+    </section>
+
+    <section class="celebration hidden" id="celebration">
+      <aside class="side-panel">
+        <h2>Mensagens da galera</h2>
+        <p>Links para as mensagens especiais feitas pelos amigos do Leo.</p>
+        <ul class="message-links">
+          <li><a href="../caio/index.html">Caio <span>→</span></a></li>
+          <li><a href="../flakas/index.html">Flakas <span>→</span></a></li>
+          <li><a href="../kethlen/index.html">Kethlen <span>→</span></a></li>
+          <li><a href="../will/index.html">Will <span>→</span></a></li>
+        </ul>
+      </aside>
+
+      <div class="celebration-main">
+        <div class="panel">
+          <h3>Galeria do Leo</h3>
+          <div class="gallery">
+            <div class="photo">Foto 1<br />Substitua por uma imagem real</div>
+            <div class="photo">Foto 2<br />Substitua por uma imagem real</div>
+            <div class="photo">Foto 3<br />Substitua por uma imagem real</div>
+            <div class="photo">Foto 4<br />Substitua por uma imagem real</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>Mural de Recados</h3>
+          <div class="message-wall">
+            <div class="message-card">
+              <input type="text" id="sender-name" placeholder="Seu nome" />
+              <textarea id="sender-message" placeholder="Escreva sua mensagem para o Leo..."></textarea>
+              <button class="btn-primary" id="save-message">Salvar recado</button>
+            </div>
+            <div class="message-card">
+              <p>Quer mostrar na hora da festa? É só escrever aqui e clicar em salvar. O recado fica gravado no navegador.</p>
+              <p style="color: var(--muted); font-size: 0.9rem;">Dica: para apagar tudo, use o botão “Resetar”.</p>
+            </div>
+          </div>
+
+          <div class="saved-messages" id="saved-messages"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
+  <script>
+    const gameContainer = document.getElementById('game-container');
+    const startButton = document.getElementById('start-fight');
+    const resetButton = document.getElementById('reset-fight');
+    const skipButton = document.getElementById('skip-fight');
+    const unlockBanner = document.getElementById('unlock-banner');
+    const celebration = document.getElementById('celebration');
+    const savedMessages = document.getElementById('saved-messages');
+    const senderName = document.getElementById('sender-name');
+    const senderMessage = document.getElementById('sender-message');
+    const saveMessageButton = document.getElementById('save-message');
+
+    const STORAGE_UNLOCK = 'leo_bday_unlocked';
+    const STORAGE_MESSAGES = 'leo_bday_messages';
+    const unlockTemplate = unlockBanner.innerHTML;
+
+    let phaserGame;
+    let fightState = {
+      started: false,
+      finished: false,
+      taylorHp: 100,
+      kanyeHp: 100,
+      lastTaylorHit: 0,
+      lastKanyeHit: 0,
+    };
+
+    const unlockCelebration = () => {
+      localStorage.setItem(STORAGE_UNLOCK, 'true');
+      window.location.href = 'surpresa.html';
+    };
+
+    window.unlockCelebration = unlockCelebration;
+
+    const loadMessages = () => {
+      savedMessages.innerHTML = '';
+      const data = JSON.parse(localStorage.getItem(STORAGE_MESSAGES) || '[]');
+      data.forEach((entry) => {
+        const card = document.createElement('div');
+        card.className = 'saved-message';
+        card.innerHTML = `<strong>${entry.name}</strong><br/>${entry.message}`;
+        savedMessages.appendChild(card);
+      });
+    };
+
+    const saveMessage = () => {
+      const name = senderName.value.trim();
+      const message = senderMessage.value.trim();
+      if (!name || !message) return;
+
+      const data = JSON.parse(localStorage.getItem(STORAGE_MESSAGES) || '[]');
+      data.unshift({ name, message });
+      localStorage.setItem(STORAGE_MESSAGES, JSON.stringify(data.slice(0, 12)));
+      senderName.value = '';
+      senderMessage.value = '';
+      loadMessages();
+    };
+
+    saveMessageButton.addEventListener('click', saveMessage);
+
+    // Não mostra nada automaticamente; só libera ao vencer.
+
+    const config = {
+      type: Phaser.AUTO,
+      parent: gameContainer,
+      backgroundColor: '#0b0d16',
+      scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: 960,
+        height: 420,
+      },
+      physics: {
+        default: 'arcade',
+        arcade: { gravity: { y: 0 }, debug: false },
+      },
+      scene: {
+        preload,
+        create,
+        update,
+      },
+    };
+
+    const startGame = () => {
+      if (phaserGame) return;
+      phaserGame = new Phaser.Game(config);
+    };
+
+    startButton.addEventListener('click', () => {
+      startGame();
+      fightState.started = true;
+    });
+
+    resetButton.addEventListener('click', () => {
+      fightState = {
+        started: false,
+        finished: false,
+        taylorHp: 100,
+        kanyeHp: 100,
+        lastTaylorHit: 0,
+        lastKanyeHit: 0,
+      };
+      unlockBanner.style.display = 'none';
+      unlockBanner.innerHTML = unlockTemplate;
+      localStorage.removeItem(STORAGE_UNLOCK);
+      if (phaserGame) {
+        phaserGame.destroy(true);
+        phaserGame = null;
+      }
+      loadMessages();
+    });
+
+    skipButton.addEventListener('click', unlockCelebration);
+
+    unlockBanner.addEventListener('click', unlockCelebration);
+
+    function preload() {
+      this.load.image('arena', 'sprites/fundo.jpg');
+      this.load.image('taylor', 'sprites/taytay.png');
+      this.load.image('kanye', 'sprites/kanye.png');
+    }
+
+    function create() {
+      const scene = this;
+      fightState.started = true;
+      const bg = scene.add.image(480, 210, 'arena');
+      bg.displayWidth = 960;
+      bg.displayHeight = 420;
+
+      const taylor = scene.physics.add.sprite(240, 280, 'taylor');
+      const kanye = scene.physics.add.sprite(720, 280, 'kanye');
+      taylor.setScale(0.35);
+      kanye.setScale(0.35);
+      // Ajusta o hitbox para o tamanho exibido (evita corpo gigante travando no bounds)
+      taylor.body.setSize(taylor.displayWidth * 0.6, taylor.displayHeight * 0.9, true);
+      kanye.body.setSize(kanye.displayWidth * 0.6, kanye.displayHeight * 0.9, true);
+      const taylorLabel = scene.add.text(0, 0, 'Taylor', { fontFamily: 'Sora', fontSize: '18px', color: '#ffffff' });
+      const kanyeLabel = scene.add.text(0, 0, 'Kanye', { fontFamily: 'Sora', fontSize: '18px', color: '#ffffff' });
+
+      taylor.setCollideWorldBounds(true);
+      kanye.setCollideWorldBounds(true);
+
+      const cursors = scene.input.keyboard.addKeys({
+        left: Phaser.Input.Keyboard.KeyCodes.A,
+        right: Phaser.Input.Keyboard.KeyCodes.D,
+        hit: Phaser.Input.Keyboard.KeyCodes.F,
+        kLeft: Phaser.Input.Keyboard.KeyCodes.J,
+        kRight: Phaser.Input.Keyboard.KeyCodes.L,
+        kHit: Phaser.Input.Keyboard.KeyCodes.K,
+      });
+
+      const hud = scene.add.text(20, 20, '', {
+        fontFamily: 'Sora',
+        fontSize: '18px',
+        color: '#ffffff',
+      });
+
+      const flash = scene.add.rectangle(480, 210, 960, 420, 0xffffff, 0).setVisible(false);
+
+      scene.registry.set('actors', { taylor, kanye, taylorLabel, kanyeLabel, cursors, hud, flash });
+
+      loadMessages();
+    }
+
+    function update(time) {
+      const { taylor, kanye, taylorLabel, kanyeLabel, cursors, hud, flash } = this.registry.get('actors');
+      if (!taylor || !kanye) return;
+
+      taylor.body.setVelocity(0);
+      kanye.body.setVelocity(0);
+
+      if (!fightState.finished) {
+        if (cursors.left.isDown) taylor.body.setVelocityX(-220);
+        if (cursors.right.isDown) taylor.body.setVelocityX(220);
+        if (cursors.kLeft.isDown) kanye.body.setVelocityX(-200);
+        if (cursors.kRight.isDown) kanye.body.setVelocityX(200);
+
+        const distance = Math.abs(taylor.x - kanye.x);
+
+        if (cursors.hit.isDown && time - fightState.lastTaylorHit > 450 && distance < 120) {
+          fightState.kanyeHp = Math.max(0, fightState.kanyeHp - 12);
+          fightState.lastTaylorHit = time;
+          flash.setFillStyle(0xff5ddc, 0.2).setVisible(true);
+          this.time.delayedCall(80, () => flash.setVisible(false));
+        }
+
+        if (cursors.kHit.isDown && time - fightState.lastKanyeHit > 550 && distance < 120) {
+          fightState.taylorHp = Math.max(0, fightState.taylorHp - 10);
+          fightState.lastKanyeHit = time;
+          flash.setFillStyle(0x3b89ff, 0.2).setVisible(true);
+          this.time.delayedCall(80, () => flash.setVisible(false));
+        }
+
+        if (fightState.kanyeHp <= 0 || fightState.taylorHp <= 0) {
+          fightState.finished = true;
+        }
+      }
+
+      taylorLabel.setPosition(taylor.x - 30, taylor.y - 80);
+      kanyeLabel.setPosition(kanye.x - 28, kanye.y - 80);
+
+      hud.setText([
+        `Taylor HP: ${fightState.taylorHp}`,
+        `Kanye HP: ${fightState.kanyeHp}`,
+        fightState.finished
+          ? (fightState.kanyeHp <= 0 ? 'Taylor venceu! 🎉' : 'Kanye venceu! 😱')
+          : 'Luta em andamento...'
+      ]);
+
+      if (fightState.finished && fightState.kanyeHp <= 0) {
+        unlockBanner.innerHTML = unlockTemplate;
+        unlockBanner.style.display = 'block';
+      }
+
+      if (fightState.finished && fightState.taylorHp <= 0) {
+        unlockBanner.style.display = 'block';
+        unlockBanner.innerHTML = '<strong>Eita!</strong> O Kanye venceu. Clique em “Resetar” ou “Modo paz” para liberar mesmo assim.';
+      }
+    }
+  </script>
+</body>
+</html>

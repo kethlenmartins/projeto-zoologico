@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏆 Jornada de Leo to Olympia</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial Black', Arial, sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .spotlight {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(255,215,0,0.1) 0%, transparent 70%);
+            pointer-events: none;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .container {
+            width: 95%;
+            max-width: 600px;
+            max-height: 95vh;
+            background: rgba(0, 0, 0, 0.85);
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            border: 2px solid #ffd700;
+            overflow-y: auto;
+        }
+
+        h1 {
+            font-size: 1.4em;
+            background: linear-gradient(45deg, #ffd700, #ffed4e, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 5px;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            animation: shine 2s ease-in-out infinite;
+        }
+
+        @keyframes shine {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
+
+        .subtitle {
+            font-size: 1em;
+            color: #ffd700;
+            margin-bottom: 20px;
+            font-weight: normal;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #000;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 20px 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+            text-transform: uppercase;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.7);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .evolution-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+            align-items: start;
+        }
+
+        .body-display {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            border: 2px solid #ffd700;
+        }
+
+        .body-parts {
+            font-size: 4em;
+            margin: 20px 0;
+            line-height: 1.2;
+        }
+
+        .body-part {
+            opacity: 0.2;
+            filter: grayscale(100%);
+            transition: all 0.5s ease;
+        }
+
+        .body-part.unlocked {
+            opacity: 1;
+            filter: grayscale(0%);
+            animation: unlock 0.8s ease-out;
+        }
+
+        .body-part-img {
+            max-width: 80px;
+            width: 100%;
+            height: auto;
+            opacity: 0.8;
+            filter: brightness(0);
+            transition: all 0.5s ease;
+            margin: 2px 0;
+            display: block;
+        }
+        
+        .body-part-img.unlocked {
+            opacity: 1;
+            filter: grayscale(0%) brightness(1);
+            animation: unlock 0.8s ease-out;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+            border-radius: 8px;
+        }
+
+        .final-img {
+            max-width: 140px;
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+            border: 2px solid #ffd700;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin: 15px 0;
+            max-height: 250px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .gallery-img {
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid #ffd700;
+            aspect-ratio: 1;
+            object-fit: cover;
+        }
+
+        @keyframes unlock {
+            0% { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+            50% { transform: scale(1.2) rotate(5deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        .training-area {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            border: 2px solid #ffd700;
+        }
+
+        .exercise-selector {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .exercise-btn {
+            background: rgba(255, 215, 0, 0.1);
+            color: #ffd700;
+            border: 1px solid #ffd700;
+            padding: 5px 10px;
+            font-size: 0.8em;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .exercise-btn:hover {
+            background: rgba(255, 215, 0, 0.3);
+            transform: scale(1.05);
+        }
+
+        .exercise-btn.active {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #000;
+            box-shadow: 0 3px 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .workout-display {
+            margin: 10px 0;
+        }
+
+        .rep-counter {
+            font-size: 1.5em;
+            color: #ffd700;
+            font-weight: bold;
+            margin: 10px 0;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
+
+        .workout-btn {
+            background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            font-size: 2em;
+            border-radius: 15px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.1s ease;
+            box-shadow: 0 5px 15px rgba(255, 68, 68, 0.5);
+            user-select: none;
+        }
+
+        .workout-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 5px rgba(255, 68, 68, 0.5);
+        }
+
+        .progress-tracker {
+            margin: 10px 0;
+        }
+
+        .progress-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .progress-label {
+            color: #ffd700;
+            font-size: 0.8em;
+            margin-bottom: 5px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700 0%, #ffed4e 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-weight: bold;
+            font-size: 0.7em;
+        }
+
+        .unlock-message {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #000;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            margin: 10px 0;
+            animation: celebration 0.6s ease-out;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.5);
+        }
+
+        @keyframes celebration {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.1) rotate(-5deg); }
+            75% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        .olympia-screen {
+            background: radial-gradient(circle, rgba(255,215,0,0.2) 0%, transparent 70%);
+            padding: 40px;
+            border-radius: 20px;
+        }
+
+        .trophy {
+            font-size: 2em;
+            margin: 10px 0;
+            animation: trophy-rotate 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
+        }
+
+        @keyframes trophy-rotate {
+            0%, 100% { transform: rotate(-15deg) scale(1); }
+            50% { transform: rotate(15deg) scale(1.1); }
+        }
+
+        .final-body {
+            font-size: 3em;
+            margin: 10px 0;
+            animation: flex 2s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+        }
+
+        @keyframes flex {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .stat-box {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid #ffd700;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .stat-number {
+            font-size: 1.5em;
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            color: #fff;
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
+
+        .message {
+            color: #fff;
+            font-size: 0.9em;
+            line-height: 1.4;
+            margin: 10px 0;
+        }
+
+        @media (max-width: 768px) {
+            .evolution-container {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .body-parts {
+                font-size: 5em;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="spotlight"></div>
+    
+    <div class="container">
+        <!-- Tela Inicial -->
+        <div id="welcome" class="screen active">
+            <h1>🏆 JORNADA DE LEO TO OLYMPIA 🏆</h1>
+            <p class="subtitle">A Evolução do Campeão</p>
+            
+            <div class="body-parts" style="font-size: 5em;">
+                💪
+            </div>
+            
+            <p class="message">
+                Hoje é um dia especial, Leo! Sua jornada rumo ao Olympia começa agora.<br>
+                Treine duro, desbloqueie cada parte do seu corpo e conquiste o título!
+            </p>
+            
+            <button class="btn" onclick="startJourney()">🔥 INICIAR A JORNADA 🔥</button>
+        </div>
+
+        <!-- Tela do Jogo -->
+        <div id="game" class="screen">
+            <h1>💪 TREINO PARA O OLYMPIA 💪</h1>
+            
+            <div class="evolution-container">
+                <!-- Display do Corpo -->
+                <div class="body-display">
+                    <h2 style="color: #ffd700; margin-bottom: 20px;">EVOLUÇÃO DO LEO</h2>
+                    <div class="body-parts" style="display: flex; flex-direction: column; align-items: center; gap: 10px; font-size: 1rem;">
+                        <img id="arms" src="assets/braco.png" class="body-part-img" alt="Braços">
+                        <img id="abs" src="assets/abdomen.png" class="body-part-img" alt="Abdômen">
+                        <img id="legs" src="assets/perna.png" class="body-part-img" alt="Pernas">
+                    </div>
+                    <div id="unlock-msg"></div>
+                </div>
+
+                <!-- Área de Treino -->
+                <div class="training-area">
+                    <h2 style="color: #ffd700; margin-bottom: 20px;">ESCOLHA SEU TREINO</h2>
+                    
+                    <div class="exercise-selector">
+                        <button class="exercise-btn active" onclick="selectExercise('legs')">
+                            🦵 PERNAS
+                        </button>
+                        <button class="exercise-btn" onclick="selectExercise('abs')">
+                            🔥 ABDÔMEN
+                        </button>
+                        <button class="exercise-btn" onclick="selectExercise('biceps')">
+                            💪 BÍCEPS
+                        </button>
+                    </div>
+
+                    <div class="workout-display">
+                        <div class="rep-counter">
+                            <span id="current-reps">0</span> / <span id="target-reps">3</span>
+                        </div>
+                        <button class="workout-btn" onclick="doRep()">
+                            <span id="exercise-emoji">🦵</span>
+                        </button>
+                        <p style="color: #fff; margin-top: 15px;">Clique para fazer repetições!</p>
+                    </div>
+
+                    <div class="progress-tracker">
+                        <div class="progress-item">
+                            <div class="progress-label">🦵 Pernas (Meta: 3 reps)</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress-legs">0/3</div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-label">🔥 Abdômen (Meta: 3 reps)</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress-abs">0/3</div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-label">💪 Bíceps (Meta: 5 reps)</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress-biceps">0/5</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela Final - Olympia -->
+        <div id="olympia" class="screen">
+            <div class="olympia-screen">
+                <h1>🏆 CAMPEÃO DO OLYMPIA! 🏆</h1>
+                
+                <div class="trophy">🏆</div>
+                
+                <div class="gallery-grid">
+                    <img src="assets/ChatGPT Image 8 de fev. de 2026, 16_48_22.png" class="gallery-img" alt="Foto Especial">
+                    <img src="assets/WhatsApp Image 2026-02-08 at 16.12.54 (1).jpeg" class="gallery-img" alt="Momentos Leo 1">
+                    <img src="assets/WhatsApp Image 2026-02-08 at 16.12.54 (2).jpeg" class="gallery-img" alt="Momentos Leo 2">
+                    <img src="assets/WhatsApp Image 2026-02-08 at 16.12.54 (3).jpeg" class="gallery-img" alt="Momentos Leo 3">
+                    <img src="assets/WhatsApp Image 2026-02-08 at 16.12.54.jpeg" class="gallery-img" alt="Momentos Leo 4">
+                    <img src="assets/WhatsApp Image 2026-02-08 at 16.36.03.jpeg" class="gallery-img" alt="Momentos Leo 5">
+                </div>
+                
+                <p class="message" style="font-size: 1.1em; color: #ffd700;">
+                    <strong>PARABÉNS, LEO!</strong>
+                </p>
+                <p class="message" style="font-size: 0.9em; font-style: italic;">
+                    "Obrigado por ter sido meu amigo e não me deixado sozinho com a Ana Eloisa."
+                </p>
+                
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-number" id="final-biceps">0</div>
+                        <div class="stat-label">💪 Bíceps</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="final-abs">0</div>
+                        <div class="stat-label">🔥 Abdômen</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="final-legs">0</div>
+                        <div class="stat-label">🦵 Pernas</div>
+                    </div>
+                </div>
+                
+                <p class="message">
+                    Você conquistou o título de Mr. Olympia! 🎉<br>
+                    <strong>FELIZ ANIVERSÁRIO!</strong> 🎂
+                </p>
+                
+                <button class="btn" onclick="restartJourney()">🔄 TREINAR NOVAMENTE</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const progress = {
+            biceps: 0,
+            abs: 0,
+            legs: 0
+        };
+
+        const targets = {
+            biceps: 5,
+            abs: 3,
+            legs: 3
+        };
+
+        const unlocked = {
+            arms: false,
+            abs: false,
+            legs: false
+        };
+
+        let currentExercise = 'legs';
+
+        const exerciseConfig = {
+            biceps: { emoji: '💪', target: 5, bodyPart: 'arms', label: 'Bíceps' },
+            abs: { emoji: '🔥', target: 3, bodyPart: 'abs', label: 'Abdômen' },
+            legs: { emoji: '🦵', target: 3, bodyPart: 'legs', label: 'Pernas' }
+        };
+
+        function startJourney() {
+            document.getElementById('welcome').classList.remove('active');
+            document.getElementById('game').classList.add('active');
+            updateDisplay();
+        }
+
+        function selectExercise(exercise) {
+            currentExercise = exercise;
+            
+            // Update button styles
+            document.querySelectorAll('.exercise-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update display
+            const config = exerciseConfig[exercise];
+            document.getElementById('exercise-emoji').textContent = config.emoji;
+            document.getElementById('target-reps').textContent = config.target;
+            document.getElementById('current-reps').textContent = progress[exercise];
+        }
+
+        function doRep() {
+            const config = exerciseConfig[currentExercise];
+            
+            if (progress[currentExercise] < config.target) {
+                progress[currentExercise]++;
+                document.getElementById('current-reps').textContent = progress[currentExercise];
+                
+                // Animação do botão
+                const btn = document.querySelector('.workout-btn');
+                btn.style.transform = 'scale(0.9)';
+                setTimeout(() => btn.style.transform = 'scale(1)', 100);
+                
+                updateProgress();
+                
+                // Checa se desbloqueou
+                if (progress[currentExercise] === config.target && !unlocked[config.bodyPart]) {
+                    unlockBodyPart(config.bodyPart, config.label);
+                }
+                
+                // Checa se completou tudo
+                if (unlocked.arms && unlocked.abs && unlocked.legs) {
+                    setTimeout(() => showOlympia(), 1000);
+                }
+            }
+        }
+
+        function updateProgress() {
+            // Update progress bars
+            Object.keys(progress).forEach(exercise => {
+                const config = exerciseConfig[exercise];
+                const percentage = (progress[exercise] / config.target) * 100;
+                const progressBar = document.getElementById(`progress-${exercise}`);
+                progressBar.style.width = percentage + '%';
+                progressBar.textContent = `${progress[exercise]}/${config.target}`;
+            });
+        }
+
+        function unlockBodyPart(bodyPart, label) {
+            unlocked[bodyPart] = true;
+            
+            // Unlock animation
+            const element = document.getElementById(bodyPart);
+            element.classList.add('unlocked');
+            
+            // Show unlock message
+            const msgDiv = document.getElementById('unlock-msg');
+            msgDiv.innerHTML = `<div class="unlock-message">🎉 ${label.toUpperCase()} DESBLOQUEADO! 🎉</div>`;
+            
+            setTimeout(() => {
+                msgDiv.innerHTML = '';
+            }, 3000);
+        }
+
+        function updateDisplay() {
+            updateProgress();
+        }
+
+        function showOlympia() {
+            document.getElementById('game').classList.remove('active');
+            document.getElementById('olympia').classList.add('active');
+            
+            // Move ChatGPT Image to the top and make sure it's visible based on user request
+            const gallery = document.querySelector('.gallery-grid');
+            if(gallery) {
+                // Ensure scroll to top
+                 gallery.scrollTop = 0;
+            }
+            
+            // Update final stats
+            document.getElementById('final-biceps').textContent = progress.biceps;
+            document.getElementById('final-abs').textContent = progress.abs;
+            document.getElementById('final-legs').textContent = progress.legs;
+        }
+
+        function restartJourney() {
+            // Reset progress
+            progress.biceps = 0;
+            progress.abs = 0;
+            progress.legs = 0;
+            
+            unlocked.arms = false;
+            unlocked.abs = false;
+            unlocked.legs = false;
+            
+            currentExercise = 'legs';
+            
+            // Reset body parts
+            document.querySelectorAll('.body-part-img').forEach(part => {
+                part.classList.remove('unlocked');
+            });
+            
+            // Back to welcome
+            document.getElementById('olympia').classList.remove('active');
+            document.getElementById('welcome').classList.add('active');
+        }
+
+        // Initialize
+        window.onload = () => {
+            updateDisplay();
+        };
+    </script>
+</body>
+</html>
