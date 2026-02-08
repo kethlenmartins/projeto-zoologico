@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mensagem para o Leo - Marcus</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #f5f5f5;
+      min-height: 100vh;
+    }
+
+    /* Seção de Mensagem */
+    .message-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 80px 40px;
+      text-align: center;
+      color: white;
+    }
+
+    .message-section h1 {
+      font-size: 3.5em;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .message-section h2 {
+      font-size: 1.8em;
+      margin-bottom: 40px;
+      font-weight: normal;
+      font-style: italic;
+      opacity: 0.9;
+    }
+
+    .message-text {
+      max-width: 900px;
+      margin: 0 auto;
+      font-size: 1.4em;
+      line-height: 1.8;
+      margin-bottom: 30px;
+    }
+
+    .signature {
+      margin-top: 50px;
+      font-size: 1.6em;
+      font-weight: bold;
+    }
+
+    /* Seção de Galeria */
+    .gallery-section {
+      padding: 80px 40px;
+      background: white;
+    }
+
+    .gallery-section h2 {
+      text-align: center;
+      font-size: 2.5em;
+      color: #333;
+      margin-bottom: 60px;
+      position: relative;
+    }
+
+    .gallery-section h2::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 2px;
+    }
+
+    .gallery-grid {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+    }
+
+    .gallery-item {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Botão de voltar */
+    .back-link {
+      display: inline-block;
+      margin-top: 60px;
+      padding: 15px 40px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: bold;
+      font-size: 1.1em;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .back-link:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    /* Responsivo */
+    @media (max-width: 768px) {
+      .message-section h1 {
+        font-size: 2.5em;
+      }
+
+      .message-section h2 {
+        font-size: 1.4em;
+      }
+
+      .message-text {
+        font-size: 1.2em;
+      }
+
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+      }
+
+      .gallery-section h2 {
+        font-size: 2em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Seção de Mensagem -->
+  <section class="message-section">
+    <h1>Feliz Aniversário Leo!</h1>
+    <h2>De: Marcus</h2>
+  </section>
+
+  <!-- Seção de Galeria -->
+  <section class="gallery-section">
+    <h2>Fotos enviadas</h2>
+    
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <img src="WhatsApp Image 2026-02-06 at 22.56.19.jpeg" alt="Momento 1">
+      </div>
+
+      <div class="gallery-item">
+        <img src="WhatsApp Image 2026-02-06 at 22.56.20.jpeg" alt="Momento 2">
+      </div>
+
+      <div class="gallery-item">
+        <img src="WhatsApp Image 2026-02-06 at 22.56.20 (1).jpeg" alt="Momento 3">
+      </div>
+
+      <div class="gallery-item">
+        <img src="WhatsApp Image 2026-02-06 at 22.56.20 (2).jpeg" alt="Momento 4">
+      </div>
+
+      <div class="gallery-item">
+        <img src="WhatsApp Image 2026-02-06 at 22.56.20 (3).jpeg" alt="Momento 5">
+      </div>
+
+      <div class="gallery-item">
+        <img src="WhatsApp Image 2026-02-06 at 22.56.21.jpeg" alt="Momento 6">
+      </div>
+
+      <div class="gallery-item">
+        <img src="WhatsApp Image 2026-02-06 at 22.56.21 (1).jpeg" alt="Momento 7">
+      </div>
+
+      <div class="gallery-item">
+        <img src="WhatsApp Image 2026-02-06 at 22.56.21 (2).jpeg" alt="Momento 8">
+      </div>
+
+      <div class="gallery-item">
+        <img src="WhatsApp Image 2026-02-06 at 22.56.21 (3).jpeg" alt="Momento 9">
+      </div>
+
+      <div class="gallery-item">
+        <img src="WhatsApp Image 2026-02-06 at 22.56.22.jpeg" alt="Momento 10">
+      </div>
+
+      <div class="gallery-item">
+        <img src="WhatsApp Image 2026-02-06 at 22.56.22 (1).jpeg" alt="Momento 11">
+      </div>
+
+      <div class="gallery-item">
+        <img src="WhatsApp Image 2026-02-06 at 22.56.22 (2).jpeg" alt="Momento 12">
+      </div>
+
+      <div class="gallery-item">
+        <img src="WhatsApp Image 2026-02-06 at 23.11.26.jpeg" alt="Momento 13">
+      </div>
+
+      <div class="gallery-item">
+        <img src="WhatsApp Image 2026-02-06 at 23.11.26 (1).jpeg" alt="Momento 14">
+      </div>
+
+      <div class="gallery-item">
+        <img src="WhatsApp Image 2026-02-06 at 23.11.27 (1).jpeg" alt="Momento 15">
+      </div>
+
+      <div class="gallery-item">
+        <img src="WhatsApp Image 2026-02-06 at 23.11.27 (2).jpeg" alt="Momento 16">
+      </div>
+
+      <div class="gallery-item">
+        <img src="WhatsApp Image 2026-02-06 at 23.11.27.jpeg" alt="Momento 17">
+      </div>
+
+      <div class="gallery-item">
+        <img src="WhatsApp Image 2026-02-06 at 23.12.06.jpeg" alt="Momento 18">
+      </div>
+    </div>
+
+    <div class="center">
+      <a href="../../index.html" class="back-link">Voltar para todas as mensagens</a>
+    </div>
+  </section>
+</body>
+</html>

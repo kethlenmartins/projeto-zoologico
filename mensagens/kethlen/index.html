@@ -256,52 +256,117 @@
       background: linear-gradient(180deg, #000, #222);
       color: #fff;
       text-align: center;
+      padding: 60px 40px;
     }
 
     .future h2 {
-      margin-bottom: 20px;
+      margin-bottom: 40px;
+      font-size: 3rem;
+      letter-spacing: 2px;
+    }
+
+    .future p {
+      max-width: 900px;
+      margin: 0 auto;
+      font-size: 1.5rem;
+      line-height: 2.2;
+      text-align: justify;
     }
 
     /* ================= EASTER EGG ================= */
 
-    .easter {
+    .easter-game {
   height: 100vh;
-  background: #300246;
+  background: #6b2a7c;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  position: relative;
 }
 
-.easter::after {
-  content: "⋯";
-  color: #444;
-  font-size: 2rem;
-  position: absolute;
-}
-
-.easter-content {
+.game-wrapper {
+  width: 80vw;
+  height: 80vh;
   text-align: center;
   color: #fff;
-  opacity: 1;
-  transition: opacity 0.6s ease;
+  transition: opacity 0.8s ease;
 }
 
-.hidden {
+.game-wrapper.hide {
   opacity: 0;
   pointer-events: none;
 }
 
-.easter-text {
-  font-size: 1.2rem;
-  margin-bottom: 20px;
+.game-wrapper h2 {
+  margin-bottom: 10px;
+  font-weight: 300;
+  letter-spacing: 1px;
 }
 
-.easter-photo {
-  width: 500px;
-  border: 3px solid #fff;
-  filter: grayscale(100%);
+#game {
+  width: 100%;
+  height: 100%;
+  border: 2px solid #222;
+  background: linear-gradient(
+    180deg,
+    #6b2a7c 0%,
+    #b1458c 30%,
+    #f06d6a 60%,
+    #f7b267 100%
+  );
 }
+
+/* recompensa */
+
+.reward {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  background: transparent;
+}
+
+.reward.show {
+  display: flex;
+}
+
+.win-text {
+  font-size: 4rem;
+  letter-spacing: 6px;
+  margin-bottom: 40px;
+  color: white;
+  opacity: 0;
+  transform: scale(0.8);
+  animation: popIn 1s ease forwards;
+}
+
+.win-photo {
+  width: 260px;
+  border: 3px solid #fff;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.win-photo.show {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 1s ease 0.5s;
+}
+
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 
   </style>
 </head>
@@ -368,36 +433,226 @@
       <h2>Feliz aniversário!</h2>
       <p>
         Leo, acompanhar um pequeno fragmento da sua vida é uma honra e uma felicidade todos os dias. Parabéns pelo seu aniversário e que seu novo ano seja cheio de alegria!
-        Você é uma das pessoas mais carismáticas, generosas e incríveis que eu conheço, e tenho certeza de que o futuro reserva coisas maravilhosas para você.
+        Você é uma das pessoas mais carismáticas, generosas e incríveis que eu conheço, e tenho certeza de que o futuro reserva coisas maravilhosas para você. 
+        Obrigada pelos nossos momentos juntos, sejam os devs escutando o Tiny Desk Brasil, as boys nights com Will e Marco, jantares e receitas duvidosas ou as simples conversas de todos os dias.
+        Você se tornou alguém muito importante para mim e eu sou muito grata por ter você na minha vida. Continuo torcendo por você a cada nova oportunidade e me alegrando por cada nova conquista, e se um dia a vida parecer muito pesada, saiba que você sempre pode contar comigo.
+        Isso é meio gay e tal, mas posso dizer que te amo e amo tudo em você, amo todos os acontecimentos da minha vida que têm algo de você e amo poder dizer isso. Obrigada pela nossa amizade e que possamos celebrar juntos por muitos outros anos! 
+
+        Com carinho, Kethlen.
       </p>
     </div>
   </section>
 
   <!-- EASTER EGG -->
-  <section class="easter" id="easter">
-    <div class="easter-content hidden">
-      <p class="easter-text">
-        If you’re reading this, you really made it.
-      </p>
-  
-      <img
-        src="./easteregg.png"
-        alt="Foto surpresa"
-        class="easter-photo"
-      />
-    </div>
-  </section>
-  
 
-  <script>
-    const easter = document.getElementById("easter");
-    const content = easter.querySelector(".easter-content");
+  <section class="easter-game">
+    <div class="game-wrapper" id="gameWrapper">
+      <h2>Ajude Leo a chegar no seu sonho</h2>
+      <p style="margin-bottom: 20px; font-style: italic; opacity: 0.9;">Reach for the stars, so if you fall, you land on a cloud</p>
+      <div id="game"></div>
+    </div>
   
-    easter.addEventListener("click", () => {
-      content.classList.remove("hidden");
-      easter.classList.add("opened");
-    });
+    <div id="reward" class="reward">
+      <h1 class="win-text">LEO MADE IT</h1>
+      <img src="./easteregg.png" alt="Foto surpresa" class="win-photo">
+    </div>
+    
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.min.js"></script>
+  <script>
+    const reward = document.getElementById("reward");
+  
+    const WIDTH = window.innerWidth * 0.8;
+    const HEIGHT = window.innerHeight * 0.8;
+  
+    const config = {
+      type: Phaser.AUTO,
+      parent: "game",
+      width: WIDTH,
+      height: HEIGHT,
+      transparent: true,
+      physics: {
+        default: "arcade",
+        arcade: {
+          gravity: { y: 900 },
+          debug: false
+        }
+      },
+      scene: {
+        preload,
+        create,
+        update
+      }
+    };
+  
+    const game = new Phaser.Game(config);
+  
+    let player;
+    let cursors;
+    let platforms;
+    let door;
+  
+    function preload() {
+      this.load.image("ground", "https://labs.phaser.io/assets/sprites/platform.png");
+      this.load.image("player", "./bear.png");
+      this.load.image("cloud", "https://labs.phaser.io/assets/sprites/cloud.png");
+    }
+  function create() {
+      // limites do mundo
+      this.physics.world.setBounds(0, 0, WIDTH, HEIGHT);
+  
+      // plataformas
+      platforms = this.physics.add.staticGroup();
+  
+      // chão
+      platforms.create(WIDTH / 2, HEIGHT - 20, "ground")
+        .setScale(4, 1)
+        .refreshBody();
+
+      // caminho jogável (escada) - ajuste o segundo parâmetro do setScale para mudar a largura
+      platforms.create(150, HEIGHT - 130, "ground")
+        .setScale(0.5, 0.6)
+        .refreshBody();
+
+
+        platforms.create(200, HEIGHT - 200, "ground")
+        .setScale(0.1, 0.6)
+        .refreshBody();
+
+        platforms.create(300, HEIGHT - 10, "ground")
+        .setScale(0.3, 0.6)
+        .refreshBody();
+  
+        platforms.create(120, HEIGHT - 300, "ground")
+        .setScale(0.3, 0.6)
+        .refreshBody();
+
+        platforms.create(350, HEIGHT - 350, "ground")
+        .setScale(0.3, 0.6)
+        .refreshBody();
+
+        platforms.create(450, HEIGHT - 400, "ground")
+        .setScale(0.2, 0.6)
+        .refreshBody();
+
+        platforms.create(500, HEIGHT - 300, "ground")
+        .setScale(0.3, 0.6)
+        .refreshBody();
+
+        platforms.create(580, HEIGHT - 260, "ground")
+        .setScale(0.2, 0.6)
+        .refreshBody();
+
+        platforms.create(700, HEIGHT - 320, "ground")
+        .setScale(0.1, 0.6)
+        .refreshBody();
+
+        platforms.create(790, HEIGHT - 400, "ground")
+        .setScale(0.1, 0.6)
+        .refreshBody();
+
+        platforms.create(850, HEIGHT - 470, "ground")
+        .setScale(0.1, 0.6)
+        .refreshBody();
+
+        platforms.create(960, HEIGHT - 370, "ground")
+        .setScale(0.2, 0.6)
+        .refreshBody();
+
+        platforms.create(905, HEIGHT - 260, "ground")
+        .setScale(0.15, 0.6)
+        .refreshBody();
+
+        platforms.create(990, HEIGHT - 215, "ground")
+        .setScale(0.15, 0.6)
+        .refreshBody();
+
+        platforms.create(1150, HEIGHT - 220, "ground")
+        .setScale(0.1, 0.6)
+        .refreshBody();
+
+        platforms.create(1230, HEIGHT - 350, "ground")
+        .setScale(0.1, 0.6)
+        .refreshBody();
+
+        platforms.create(1290, HEIGHT - 410, "ground")
+        .setScale(0.1, 0.6)
+        .refreshBody();
+
+        platforms.create(1220, HEIGHT - 500, "ground")
+        .setScale(0.1, 0.6)
+        .refreshBody();
+
+        platforms.create(1300, HEIGHT - 550, "ground")
+        .setScale(0.1, 0.6)
+        .refreshBody();
+
+        platforms.create(1360, HEIGHT - 600, "ground")
+        .setScale(0.1, 0.6)
+        .refreshBody();
+
+
+      // player
+      player = this.physics.add.sprite(100, HEIGHT - 100, "player");
+      player.setCollideWorldBounds(true);
+      player.setBounce(0.1);
+      player.setScale(0.1);
+  
+   
+      this.physics.add.collider(player, platforms);
+  
+      // porta (sonho)
+      cloud = this.physics.add.staticSprite(WIDTH - 120, 80, "cloud");
+      this.physics.add.overlap(player, cloud, reachDream, null, this);  
+  
+      // controles
+      cursors = this.input.keyboard.createCursorKeys();
+    }
+  
+    function update() {
+      if (cursors.left.isDown) {
+        player.setVelocityX(-220);
+      } else if (cursors.right.isDown) {
+        player.setVelocityX(220);
+      } else {
+        player.setVelocityX(0);
+      }
+  
+      if (cursors.up.isDown && player.body.touching.down) {
+        player.setVelocityY(-500);
+      }
+    }
+
+let finished = false;
+
+function reachDream() {
+  if (finished) return;
+  finished = true;
+
+  this.physics.pause();
+  
+  const gameWrapper = document.getElementById("gameWrapper");
+  const photo = document.querySelector(".win-photo");
+
+  // Esconde o jogo
+  gameWrapper.classList.add("hide");
+  
+  // Mostra a recompensa
+  setTimeout(() => {
+    reward.classList.add("show");
+    
+    // Mostra a foto depois do texto
+    setTimeout(() => {
+      photo.classList.add("show");
+    }, 800);
+  }, 800);
+}
+
+
   </script>
+  
+  
   
 
 </body>
