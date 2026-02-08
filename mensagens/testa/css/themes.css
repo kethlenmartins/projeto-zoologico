@@ -1,0 +1,237 @@
+/* ============================================
+   CRB Theme - Easter Egg
+   ============================================ */
+
+/* CRB Flashing Animation */
+@keyframes crbFlash {
+    0%, 100% {
+        background-color: #E30613;
+    }
+    50% {
+        background-color: #FFFFFF;
+    }
+}
+
+/* Theme Toggle Class */
+body.crb-theme {
+    animation: crbFlash 0.5s infinite;
+    position: relative;
+}
+
+body.crb-theme::before {
+    content: '⚽ VAMO CRB! ⚽';
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    font-weight: 900;
+    color: #E30613;
+    text-shadow: 
+        2px 2px 0 #FFFFFF,
+        -2px -2px 0 #FFFFFF,
+        2px -2px 0 #FFFFFF,
+        -2px 2px 0 #FFFFFF,
+        4px 4px 8px rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    pointer-events: none;
+    animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+body.crb-theme * {
+    animation: crbFlash 0.5s infinite;
+}
+
+/* Keep some elements from flashing */
+body.crb-theme img,
+body.crb-theme video {
+    animation: none;
+}
+
+/* ============================================
+   Minecraft Theme (Legacy - Replaced by CRB)
+   ============================================ */
+
+/* Theme Toggle Class */
+body.minecraft-theme {
+    --dark-bg: #8B7355;
+    --dark-gray: #654321;
+    --medium-gray: #8B6F47;
+    --light-gray: #A0826D;
+    --crb-red: #4A4A4A;
+    --crb-white: #F5F5DC;
+    --text-primary: #F5F5DC;
+    --text-secondary: #D2B48C;
+    
+    font-family: 'Minecraft', 'Courier New', monospace;
+    image-rendering: pixelated;
+}
+
+/* Minecraft Font Face */
+@font-face {
+    font-family: 'Minecraft';
+    src: url('../assets/fonts/minecraft.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Background Textures */
+body.minecraft-theme::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../assets/textures/grass-dirt.png');
+    background-size: 64px 64px;
+    background-repeat: repeat;
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: -1;
+}
+
+body.minecraft-theme .hero {
+    background: linear-gradient(135deg, #654321 0%, #8B7355 100%);
+}
+
+body.minecraft-theme .hero::before {
+    background-image: none;
+}
+
+/* Minecraft Style Borders */
+body.minecraft-theme .game-card,
+body.minecraft-theme .profile-image img,
+body.minecraft-theme .game-image,
+body.minecraft-theme .modal-content,
+body.minecraft-theme .terminal {
+    border-width: 4px;
+    border-style: solid;
+    border-color: #4A4A4A #2A2A2A #2A2A2A #4A4A4A;
+    box-shadow: inset 2px 2px 0 rgba(255, 255, 255, 0.2),
+                inset -2px -2px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Pixelated Buttons */
+body.minecraft-theme .play-button,
+body.minecraft-theme .quest-item {
+    background-image: url('../assets/textures/cobblestone.png');
+    background-size: 32px 32px;
+    border-width: 3px;
+    border-style: solid;
+    border-color: #6A6A6A #3A3A3A #3A3A3A #6A6A6A;
+}
+
+body.minecraft-theme .play-button:hover {
+    background-color: transparent;
+    border-color: #3A3A3A #6A6A6A #6A6A6A #3A3A3A;
+}
+
+/* Card Backgrounds */
+body.minecraft-theme .game-card,
+body.minecraft-theme .setlist-item,
+body.minecraft-theme .quest-item {
+    background-image: url('../assets/textures/cobblestone.png');
+    background-size: 48px 48px;
+}
+
+/* Titles with Minecraft Shadow */
+body.minecraft-theme .hero-title,
+body.minecraft-theme .section-title,
+body.minecraft-theme .modal-title {
+    text-shadow: 3px 3px 0 #2A2A2A;
+}
+
+/* Pixelated Images */
+body.minecraft-theme img {
+    image-rendering: pixelated;
+    filter: contrast(1.1) saturate(0.9);
+}
+
+/* Terminal Minecraft Style */
+body.minecraft-theme .terminal {
+    background-image: url('../assets/textures/cobblestone.png');
+    background-size: 32px 32px;
+}
+
+body.minecraft-theme .terminal-header {
+    background-color: rgba(42, 42, 42, 0.8);
+}
+
+/* Gallery Overlay */
+body.minecraft-theme .photo-overlay {
+    background: rgba(74, 74, 74, 0.9);
+}
+
+/* Smooth Transitions for Theme Changes */
+body,
+.hero,
+.game-card,
+.profile-image img,
+.terminal,
+.modal-content {
+    transition: background-color 0.5s ease,
+                background-image 0.5s ease,
+                color 0.5s ease,
+                border-color 0.5s ease;
+}
+
+/* Minecraft Block Cursor Effect */
+body.minecraft-theme * {
+    cursor: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAABnSURBVHjaYvj//z8DJYCJgUIw+GpGVvT//38GZAPUGIwi8P///xkZ////YGRkZGJgYPiPLojuZQZGRkYGZAVMSAqQNaPbhqwJ2VZkTdi8jqwZl63ImnB5GVkzPq8ia8bnVQBHXj2YMvX6CQAAAABJRU5ErkJggg=='), auto;
+}
+
+/* Minecraft Achievement-style Modal */
+body.minecraft-theme .modal-content {
+    background-image: url('../assets/textures/cobblestone.png');
+    background-size: 64px 64px;
+}
+
+body.minecraft-theme .level-up {
+    color: #FFD700;
+    text-shadow: 3px 3px 0 #8B6914;
+}
+
+/* Minecraft Health Bar Style for Quest Items */
+body.minecraft-theme .quest-item {
+    border-left: 6px solid #8B0000;
+}
+
+body.minecraft-theme .quest-icon {
+    color: #FFD700;
+    text-shadow: 2px 2px 0 #8B6914;
+}
+
+/* Notification for Theme Change */
+.theme-notification {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.9);
+    color: #FFD700;
+    padding: 2rem 4rem;
+    border: 4px solid #8B6914;
+    font-size: 2rem;
+    font-family: 'Minecraft', 'Courier New', monospace;
+    text-shadow: 3px 3px 0 #8B6914;
+    z-index: 3000;
+    animation: fadeInOut 2s ease-in-out;
+    pointer-events: none;
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0; }
+    10%, 90% { opacity: 1; }
+}
