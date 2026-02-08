@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mensagens dos Professores - Leo</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #620786 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      color: white;
+      font-size: 2.5em;
+      margin-bottom: 50px;
+      text-align: center;
+    }
+
+    h2 {
+        color: white;
+    }
+
+    .cards-container {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 1200px;
+    }
+
+    .card {
+      width: 320px;
+      height: 450px;
+      perspective: 1000px;
+      cursor: pointer;
+    }
+
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+    }
+
+    .card.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-front,
+    .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+    }
+
+    .card-front {
+      background: white;
+    }
+
+    .card-back {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      transform: rotateY(180deg);
+      color: white;
+    }
+
+    .professor-name {
+      font-size: 2em;
+      font-weight: bold;
+      color: #667eea;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .professor-title {
+      font-size: 1.1em;
+      color: #666;
+      text-align: center;
+      font-style: italic;
+    }
+
+    .click-hint {
+      margin-top: 30px;
+      font-size: 0.9em;
+      color: #999;
+      text-align: center;
+    }
+
+    .message-content {
+      font-size: 1.1em;
+      line-height: 1.6;
+      text-align: center;
+      overflow-y: auto;
+    }
+
+    .message-signature {
+      margin-top: 30px;
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+
+    .back-link {
+      margin-top: 50px;
+      padding: 15px 30px;
+      background: white;
+      color: #667eea;
+      text-decoration: none;
+      border-radius: 25px;
+      font-weight: bold;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .back-link:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    @media (max-width: 1024px) {
+      .cards-container {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Mensagens dos Professores</h1>
+  <h2>Você consegue adivinhar quem mandou cada mensagem?</h2>
+  <br><br>
+
+  <div class="cards-container">
+    <!-- Card 1 -->
+    <div class="card" onclick="this.classList.toggle('flipped')">
+      <div class="card-inner">
+        <div class="card-front">
+          <div class="professor-title">Leoooo, parabéns! Desejo a você muitas bênçãos e alegrias neste novo ciclo de vida. E também que neste momento de construção da carreira você consiga encontrar ótimas oportunidades. Sou grato pelo carinho e respeito que você sempre demonstrou - faz falta te encontrar pelos corredores e saber como vão as coisas hehe. Mas saiba que pode continuar contando comigo!
+            Feliz aniversário! Abração!</div>
+        </div>
+        <div class="card-back">
+          <div class="message-content">
+            Felipe Resina
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="card" onclick="this.classList.toggle('flipped')">
+      <div class="card-inner">
+        <div class="card-front">
+          <div class="professor-title">Léo, 
+
+            Parabéns pelo seu aniversário! Foi muito bom ter participado dos projetos com você e ver seu empenho e dedicação, bem como sua serenidade no dia-a-dia. Desejo a você muita saúde e realizações! 
+            
+            Um abraço, 
+            
+            xxxxx.</div>
+        </div>
+        <div class="card-back">
+          <div class="message-content">
+            Tomaz Sasaki
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="card" onclick="this.classList.toggle('flipped')">
+      <div class="card-inner">
+        <div class="card-front">
+          <div class="professor-title">Feliz Aniversário, LEO! Tudo de bom pra você!!!!</div>
+        </div>
+        <div class="card-back">
+          <div class="message-content">
+            Rodolfo Goya
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a href="../../index.html" class="back-link">Voltar para todas as mensagens</a>
+</body>
+</html>
